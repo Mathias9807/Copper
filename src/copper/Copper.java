@@ -22,9 +22,12 @@ public class Copper extends Canvas implements Runnable {
 	 */
 	public static final String		OS				= System.getProperty("os.name").toLowerCase();
 	
+	/**
+	 * The title of the window. 
+	 */
 	public static final String		TITLE			= "Copper Alpha";
 
-	public static final boolean 	FULLSCREEN 		= OS.contains("mac") ? false : false;
+	public static final boolean 	FULLSCREEN 		= true;
 	public static final DisplayMode DISPLAYMODE 	= GraphicsEnvironment.getLocalGraphicsEnvironment()
 			.getDefaultScreenDevice().getDisplayMode();
 	public static final boolean 	FPS_LOCK		= true;
