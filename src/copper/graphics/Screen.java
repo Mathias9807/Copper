@@ -2,7 +2,10 @@ package copper.graphics;
 
 import static copper.entities.Entity.entities;
 import static copper.levels.Level.levelBuffer;
+
+import java.awt.event.*;
 import java.util.*;
+
 import copper.*;
 import copper.entities.*;
 import copper.gui.Menu;
@@ -10,7 +13,7 @@ import copper.levels.Level;
 
 public class Screen {
 
-	private int width, height;
+	public int width, height;
 	public int[][] pixels;
 	
 	private static int xCam, yCam;
@@ -54,7 +57,8 @@ public class Screen {
 			if (x < 0 || x >= levelBuffer.length) continue;
 			for (int y = yCam; y < height + yCam; y++) {
 				if (y < 0 || y >= levelBuffer[0].length) continue;
-				pixels[x - xCam][y - yCam] = levelBuffer[x][y];
+				pixels[x - xCam][y - yCam] = 
+						levelBuffer[x][y];
 			}
 		}
 		
@@ -78,7 +82,7 @@ public class Screen {
 	}
 	
 	@SuppressWarnings("unused")
-	private void clearScreen(int color){
+	private void clearScreen(int color) {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				pixels[x][y] = color;
@@ -86,7 +90,7 @@ public class Screen {
 		}
 	}
 	
-	private void clearScreen(Sprite s){
+	private void clearScreen(Sprite s) {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				pixels[x][y] = s.getBuffer()[Math.abs(x + xCam) % s.width][Math.abs(y + yCam) % s.height];
@@ -94,7 +98,7 @@ public class Screen {
 		}
 	}
 	
-	public void centerScreen(){
+	public void centerScreen() {
 		try {
 			if (!focusedEntity.alive) focusedEntity = entities.get(0);
 		}catch (IndexOutOfBoundsException e) {

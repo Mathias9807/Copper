@@ -8,9 +8,9 @@ public class Ball extends Particle {
 	public Ball(Entity p, double x, double y, double z, double rot, double speed) {
 		super(p, x, y, z, rot, speed);
 		setSprite(Sprite.ball);
-		mass  			= 0.01;
+		mass  			= 0.4;
 		bounce  		= 0.95;
-		dz				= 1.75;
+		dz				= 0.75;
 		reactsOnTouch	= true;
 		setShadow(Sprite.shadowSmall);
 		setTime(1000);

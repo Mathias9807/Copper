@@ -67,7 +67,7 @@ public class Player extends Entity {
 		
 		if (Panel.pressedMButtons.contains(1)) 
 			for (int i = 0; i < 3; i++) 
-				new Ball(this, x + width / 2, y + height / 2, z, direction, length / 24);
+				new Ball(this, x + width / 2, y + height / 2, z, direction, length * 4);
 		
 		if (Panel.pressedMButtons.contains(2)) 
 			for (int i = 0; i < 3; i++) 

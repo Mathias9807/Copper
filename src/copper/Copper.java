@@ -3,6 +3,7 @@ package copper;
 import com.apple.eawt.*;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,9 +14,11 @@ import javax.swing.JFrame;
 import copper.graphics.Screen;
 import copper.levels.Level;
 
-public class Copper extends Canvas implements Runnable {
+public class Copper extends Canvas implements Runnable, ComponentListener {
 
 	private static final long serialVersionUID 		= 1L;
+	
+	private static Copper engine;
 	
 	/**
 	 * The current operative system. 
@@ -27,29 +30,31 @@ public class Copper extends Canvas implements Runnable {
 	 */
 	public static final String		TITLE			= "Copper Alpha";
 
-	public static final boolean 	FULLSCREEN 		= true;
+	public static final boolean 	FULLSCREEN 		= false;
 	public static final DisplayMode DISPLAYMODE 	= GraphicsEnvironment.getLocalGraphicsEnvironment()
 			.getDefaultScreenDevice().getDisplayMode();
 	public static final boolean 	FPS_LOCK		= true;
 	
 	public static final int 		SCALE 			= 4;
 	public static final double 		ASPECT_RATIO	= (double) DISPLAYMODE.getHeight() / DISPLAYMODE.getWidth();
-	public static final int 		WIDTH			= FULLSCREEN ? DISPLAYMODE.getWidth() / SCALE : 200;
-	public static final int 		HEIGHT			= FULLSCREEN ? DISPLAYMODE.getHeight() / SCALE : (int) (WIDTH * ASPECT_RATIO);
 	public static final long 		START_TIME 		= System.currentTimeMillis();
+	public static int 				WIDTH			= FULLSCREEN ? DISPLAYMODE.getWidth() / SCALE : 200;
+	public static int 				HEIGHT			= FULLSCREEN ? DISPLAYMODE.getHeight() / SCALE : (int) (WIDTH * ASPECT_RATIO);
 	
 	public static final boolean 	DEBUG_MODE		= false;
 	
 	public static JFrame 			window;
+	
+	public static boolean 			resized 		= false;
 	
 	public static boolean 			focused;
 
 	public static Level 			level;
 
 	private Thread 					thread;
-	private BufferedImage 			img;
+	private volatile BufferedImage 	img;
 	private boolean 				running 		= false;
-	private int[] 					pixels;
+	private volatile int[] 			pixels;
 	private Panel 					panel;
 	private Screen 					screen;
 
@@ -76,6 +81,7 @@ public class Copper extends Canvas implements Runnable {
 		addFocusListener(panel);
 		addMouseListener(panel);
 		addMouseMotionListener(panel);
+		addComponentListener(this);
 	}
 
 	public void start() {
@@ -120,6 +126,20 @@ public class Copper extends Canvas implements Runnable {
 				render();
 				fps++;
 			}
+			
+			if (resized) {
+				resized = false;
+				
+				WIDTH = window.getWidth() / Copper.SCALE;
+				HEIGHT = window.getHeight() / Copper.SCALE;
+
+				engine.img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+				engine.pixels = ((DataBufferInt) engine.img.getRaster().getDataBuffer()).getData();
+				
+				screen.width = WIDTH;
+				screen.height = HEIGHT;
+				screen.pixels = new int[WIDTH][HEIGHT];
+			}
 		}
 	}
 	
@@ -157,10 +177,10 @@ public class Copper extends Canvas implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public static void main(String[] args) {
 		System.out.println("OS: " + OS);
-		Copper engine = new Copper();
+		engine = new Copper();
 		
 		window = new JFrame("Copper Alpha");
 		window.add(engine);
@@ -189,6 +209,19 @@ public class Copper extends Canvas implements Runnable {
 		if (FULLSCREEN) gDevice.setFullScreenWindow(window);
 		
 		engine.start();
+	}
+
+	public void componentResized(ComponentEvent e) {
+		resized = true;
+	}
+
+	public void componentMoved(ComponentEvent e) {
+	}
+
+	public void componentShown(ComponentEvent e) {
+	}
+
+	public void componentHidden(ComponentEvent e) {
 	}
 
 }
