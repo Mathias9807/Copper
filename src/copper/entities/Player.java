@@ -61,7 +61,10 @@ public class Player extends Entity {
 		if (dx == 0 && dy == 0) moving = false;
 		setSprite(Sprite.ghost.getSprite(spriteDirection, (int) (moving ? Panel.time * 4 : 0) % 2));
 		
-		if (Panel.mButtons[0]) 
+		if (Panel.pressedMButtons.contains(0)) 
+			new Ball(this, x + width / 2, y + height / 2, z, direction, 256);
+		
+		/*if (Panel.mButtons[0]) 
 			for (int i = 0; i < 2; i++) 
 				new Flame(this, x + width / 2, y + height / 2, z - 1, xx, yy, length);
 		
@@ -71,7 +74,7 @@ public class Player extends Entity {
 		
 		if (Panel.pressedMButtons.contains(2)) 
 			for (int i = 0; i < 3; i++) 
-				new Boulder(this, x + width / 2, y + height / 2, z, direction);
+				new Boulder(this, x + width / 2, y + height / 2, z, direction);*/
 		
 		if (sprinting && (dx != 0 || dy != 0) && Panel.time % 4 == 0) new Particle(this, x + rand.nextInt(width), 
 				y + rand.nextInt(height), z + 1, (rand.nextDouble() * 360), 0).setColor(0xFFFFFF)

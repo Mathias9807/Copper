@@ -1,7 +1,5 @@
 package copper;
 
-import com.apple.eawt.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
@@ -33,7 +31,7 @@ public class Copper extends Canvas implements Runnable, ComponentListener {
 	public static final boolean 	FULLSCREEN 		= false;
 	public static final DisplayMode DISPLAYMODE 	= GraphicsEnvironment.getLocalGraphicsEnvironment()
 			.getDefaultScreenDevice().getDisplayMode();
-	public static final boolean 	FPS_LOCK		= true;
+	public static final boolean 	FPS_LOCK		= false;
 	
 	public static final int 		SCALE 			= 4;
 	public static final double 		ASPECT_RATIO	= (double) DISPLAYMODE.getHeight() / DISPLAYMODE.getWidth();
@@ -188,7 +186,7 @@ public class Copper extends Canvas implements Runnable, ComponentListener {
 		if (FULLSCREEN) window.setUndecorated(true);
 		try {
 			if (OS.contains("mac")) {
-				Application.getApplication().setDockIconImage(ImageIO.read(Copper.class.getClass().getResourceAsStream("/icon.png")));
+				//com.apple.eawt.Application.getApplication().setDockIconImage(ImageIO.read(Copper.class.getClass().getResourceAsStream("/icon.png")));
 			}else {
 				ArrayList<Image> images = new ArrayList<Image>();
 				images.add(ImageIO.read(Copper.class.getClass().getResourceAsStream("/icon.png")));

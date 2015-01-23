@@ -15,7 +15,7 @@ public class Level {
 	
 //	Global physics variables
 	public static final double GRAVITY 		= 9.8;
-	public static final double AIR_DENSITY 	= 0.005;
+	public static final double AIR_DENSITY 	= 0.002;
 	
 	public void loadLevel(String path) {
 		System.out.println("Loading Level: " + path);
