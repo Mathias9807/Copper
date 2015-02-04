@@ -1,12 +1,10 @@
 package copper.graphics;
 
-import static copper.entities.Entity.entities;
-import static copper.levels.Level.levelBuffer;
+import static copper.levels.Level.*;
 
-import java.awt.event.*;
 import java.util.*;
 
-import copper.*;
+import copper.Copper;
 import copper.entities.*;
 import copper.gui.Menu;
 import copper.levels.Level;
@@ -22,8 +20,8 @@ public class Screen {
 	
 	private Comparator<Entity> comparator = new Comparator<Entity>() {
 		public int compare(Entity e0, Entity e1) {
-			if (e0.z > e1.z) return 1;
-			if (e0.z < e1.z) return -1;
+			if (e0.y > e1.y) return 1;
+			if (e0.y < e1.y) return -1;
 			return 0;
 		}
 	};

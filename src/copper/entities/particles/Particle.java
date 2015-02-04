@@ -1,8 +1,12 @@
 package copper.entities.particles;
 
+import static copper.levels.Level.entities;
+
 import java.util.ArrayList;
+
 import copper.Panel;
 import copper.entities.Entity;
+import copper.entities.items.Item;
 import copper.graphics.*;
 import copper.levels.Level;
 
@@ -81,7 +85,7 @@ public class Particle extends Entity {
 		if (reactsOnTouch) 
 			for (int i = 0; i < entities.size(); i++){
 				Entity e = entities.get(i);
-				if (e.isGhost() || e.isParticle) continue;
+				if (e.isGhost() || e.isParticle || e instanceof Item) continue;
 				if (hitEntities.contains(e.getId())) {
 					continue;
 				}

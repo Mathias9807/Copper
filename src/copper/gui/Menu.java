@@ -1,8 +1,10 @@
 package copper.gui;
 
-import java.awt.event.KeyEvent;
-import copper.graphics.Screen;
 import static copper.Panel.pressedKeys;
+
+import java.awt.event.KeyEvent;
+
+import copper.graphics.Screen;
 
 public class Menu {
 	

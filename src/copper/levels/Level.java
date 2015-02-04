@@ -2,14 +2,18 @@ package copper.levels;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Scanner;
+import java.util.*;
+
 import javax.imageio.ImageIO;
+
 import copper.Panel;
 import copper.entities.*;
+import copper.entities.items.*;
 import copper.tiles.Tile;
 
 public class Level {
 
+	public static ArrayList<Entity> entities 	= new ArrayList<Entity>();
 	public static Tile[][] tileMap;
 	public static int[][] levelBuffer;
 	
@@ -25,6 +29,8 @@ public class Level {
 			loadFromImage("/levels" + path);
 		levelBuffer = new int[tileMap.length << 4][tileMap[0].length << 4];
 		renderBuffer();
+		
+		entities.add(new Item(9, 5, 3, new ItemType()));
 	}
 	
 	private void renderBuffer(){

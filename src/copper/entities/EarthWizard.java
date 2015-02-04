@@ -1,7 +1,8 @@
 package copper.entities;
 
+import static copper.levels.Level.entities;
 import copper.Panel;
-import copper.entities.particles.*;
+import copper.entities.particles.Boulder;
 import copper.graphics.*;
 
 public class EarthWizard extends Entity {

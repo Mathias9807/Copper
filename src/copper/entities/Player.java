@@ -1,7 +1,9 @@
 package copper.entities;
 
 import static copper.Panel.keys;
+
 import java.awt.event.KeyEvent;
+
 import copper.*;
 import copper.entities.particles.*;
 import copper.graphics.*;
@@ -25,8 +27,6 @@ public class Player extends Entity {
 		speed 		= 60;
 	}
 	
-//	length / 10D = Particle speed when aiming with mouse.
-
 	public void tick() {
 		super.tick();
 		dx = 0;
@@ -48,7 +48,6 @@ public class Player extends Entity {
 		
 		int xx = Panel.getMouseX() / Copper.SCALE - (xAbsolute - Screen.getCamX()) - width / 2;
 		int yy = Panel.getMouseY() / Copper.SCALE - (yAbsolute - Screen.getCamY()) - height / 2;
-		double length = Math.sqrt(xx * xx + yy * yy);
 		
 		direction = (int) (Math.atan2(yy, xx) / Math.PI * 180);
 		

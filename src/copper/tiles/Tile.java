@@ -1,6 +1,6 @@
 package copper.tiles;
 
-import copper.graphics.*;
+import copper.graphics.Sprite;
 
 
 public class Tile {

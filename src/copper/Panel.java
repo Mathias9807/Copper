@@ -1,13 +1,15 @@
 package copper;
 
-import static copper.entities.Entity.entities;
+import static copper.levels.Level.entities;
+
 import java.awt.event.*;
 import java.util.ArrayList;
+
 import copper.gui.Menu;
 
 /**
  * Handles game updates and Keyboard/Mouse input.
- * @author Källaren
+ * @author Kï¿½llaren
  */
 
 public class Panel implements KeyListener, FocusListener, MouseListener, MouseMotionListener {

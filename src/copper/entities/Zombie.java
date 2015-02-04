@@ -1,5 +1,6 @@
 package copper.entities;
 
+import static copper.levels.Level.entities;
 import copper.graphics.*;
 
 public class Zombie extends Entity {
@@ -13,7 +14,7 @@ public class Zombie extends Entity {
 		yRenderOff  = 12;
 		width 		= sprite.width;
 		height 		= sprite.height - 12;
-		speed  	 	= 48;
+		speed  	 	= 32;
 		dmgColor 	= 0x22AA22;
 		
 		target = Screen.getFocusedEntity();
@@ -33,6 +34,10 @@ public class Zombie extends Entity {
 		if (targetY > thisY) dy = speed;
 		if (targetY < thisY) dy = -speed;
 		move(dx, dy);
+	}
+	
+	protected void onCollision(Entity collider) {
+		collider.damage(2, this);
 	}
 	
 	private boolean isValidTarget(Entity target) {

@@ -1,15 +1,18 @@
 package copper.entities;
 
 import static copper.Panel.delta;
-import java.util.*;
+import static copper.levels.Level.entities;
+
+import java.util.Random;
+
 import copper.Panel;
+import copper.entities.items.*;
 import copper.entities.particles.Particle;
 import copper.graphics.*;
 import copper.levels.Level;
 
 public class Entity {
 	
-	public static ArrayList<Entity> entities 	= new ArrayList<Entity>();
 	protected static Random 		rand 		= new Random();
 	private static long				idCount 	= Long.MIN_VALUE;
 	
@@ -29,6 +32,8 @@ public class Entity {
 	
 	public Entity		attacker;
 	
+	public Container	inventory;
+	
 	public Entity(double x, double y, double z){
 		this.x 			= x;
 		this.y 			= y;
@@ -47,6 +52,7 @@ public class Entity {
 		xAbsolute		= (int) x - xRenderOff;
 		yAbsolute		= (int) (y - z + elevation) - yRenderOff;
 		isParticle 		= false;
+		inventory 		= new Container(1);
 		id				= genId();
 		setSprite(new Sprite(width, height, 0xFFFFFF));
 		setShadow(Sprite.shadowNormal);
@@ -83,17 +89,20 @@ public class Entity {
 			if (!isTileSolid((int) x >> 4, (int) (y + dy) >> 4) && !isTileSolid((int) xc >> 4, (int) (y + dy) >> 4)) yb = true;
 		}
 		
-		if (!isGhost()) 
+		if (!isGhost() && !(this instanceof Item)) 
 		for (int i = 0; i < entities.size(); i++){
 			Entity e = entities.get(i);
 			if (e == this || e.isGhost() || e.isParticle) continue;
 			if (x + dx < e.x + e.width && xc + dx >= e.x && y + dy < e.y + e.height && yc + dy + 1 >= e.y) {
-				if (!e.isPushable()) return false;
+				if (e instanceof Item) {
+					e.onCollision(this);
+					continue;
+				}
+				if (!e.isPushable()) continue;
 				xe = false;
 				ye = false;
 				e.move(dx * 0.5, dy * 0.5, 0);
-				e.damage(1, this);
-				damage(1, e);
+				onCollision(e);
 			}
 		}
 		
@@ -138,6 +147,13 @@ public class Entity {
 		
 		if (xb && xe) x += dx;
 		if (yb && ye) y += dy;
+	}
+	
+	/**
+	 * Called when this Entity collides with another. 
+	 * @param collider
+	 */
+	protected void onCollision(Entity collider) {
 	}
 	
 	public void dead() {
