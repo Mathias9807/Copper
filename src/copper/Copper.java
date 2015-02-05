@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 
 import copper.graphics.Screen;
 import copper.levels.Level;
+import copper.gui.Menu;
 
 public class Copper extends Canvas implements Runnable, ComponentListener {
 
@@ -137,6 +138,8 @@ public class Copper extends Canvas implements Runnable, ComponentListener {
 				screen.width = WIDTH;
 				screen.height = HEIGHT;
 				screen.pixels = new int[WIDTH][HEIGHT];
+				
+				Menu.current.initComponents();
 			}
 		}
 	}

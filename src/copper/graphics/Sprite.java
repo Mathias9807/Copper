@@ -2,13 +2,14 @@ package copper.graphics;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
 public class Sprite {
 
 //	Tiles
-	public static final AnimSprite terrain 	= new AnimSprite("/tiles/terrain.png", 16, 16);
+	public static final SpriteSheet terrain 	= new SpriteSheet("/tiles/terrain.png", 16, 16);
 	
 //	Entities
 	public static final Sprite 	player		= new Sprite("/entities/player.png");
@@ -16,9 +17,9 @@ public class Sprite {
 	public static final Sprite 	crate 		= new Sprite("/entities/crate.png");
 	public static final Sprite 	david 		= new Sprite("/entities/david.png");
 	
-	public static final AnimSprite ghost	= new AnimSprite("/entities/ghost.png", 16, 16);
-	public static final AnimSprite wizard	= new AnimSprite("/entities/wizard.png", 10, 12);
-	public static final AnimSprite zombie	= new AnimSprite("/entities/zombie.png", 14, 16);
+	public static final SpriteSheet ghost	= new SpriteSheet("/entities/ghost.png", 16, 16);
+	public static final SpriteSheet wizard	= new SpriteSheet("/entities/wizard.png", 10, 12);
+	public static final SpriteSheet zombie	= new SpriteSheet("/entities/zombie.png", 14, 16);
 	
 //	Particles
 	public static final Sprite 	flame		= new Sprite("/particles/flame.png");
@@ -32,7 +33,11 @@ public class Sprite {
 	public static final Sprite 	shadowNormal	= shadow.getSubSprite(16, 0, 8, 4);
 	public static final Sprite 	shadowLarge	= shadow.getSubSprite(0, 0, 16, 8);
 	
-	public static final AnimSprite healthBar	= new AnimSprite("/gui/health bar.png", 8, 8);
+	public static final SpriteSheet healthBar	= new SpriteSheet("/gui/health bar.png", 8, 8);
+	
+	public static final SpriteSheet font		= new SpriteSheet("/gui/font.png", 6, 8);
+
+	public static HashMap<Character, Integer> characters = createCharacterHashMap();
 
 	private static final int 	NON_OPAQUE_COLOR = 0xFF00FF;
 	
@@ -142,6 +147,25 @@ public class Sprite {
 		}
 	}
 	
+	public static void renderText(int[][] buffer, String text, int color, double x, double y) {
+		for (int i = 0; i < text.length(); i++) {
+			Sprite ch = font.getSprite(characters.get(text.charAt(i)));
+			if (ch == null) continue;
+			
+			for (int xx = 0; xx < ch.width; xx++) {
+				if (x + xx < 0 || x + xx + i * ch.width >= buffer.length) continue;
+				
+				for (int yy = 0; yy < ch.height; yy++) {
+					if (y + yy < 0 || y + yy >= buffer[0].length) continue;
+					
+					if ((ch.buffer[xx][yy] & 0xFFFFFF) == NON_OPAQUE_COLOR) continue;
+					
+					buffer[(int) x + xx + i * ch.width][(int) y + yy] = color;
+				}
+			}
+		}
+	}
+	
 	public static void renderRect(int[][] buffer, int x, int y, int w, int h) {
 		for (int xx = 0; xx <= w; xx++) {
 			if (x + xx < 0 || x + xx >= buffer.length || y < 0 || y + h >= buffer[0].length) continue;
@@ -153,6 +177,31 @@ public class Sprite {
 			buffer[x][y + yy] = 0;
 			buffer[x + w][y + yy] = 0;
 		}
+	}
+	
+	public static void fillRect(int[][] buffer, int color, int x, int y, int w, int h) {
+		for (int xx = 0; xx < w; xx++) {
+			if (x + xx < 0 || x + xx >= buffer.length) continue;
+			
+			for (int yy = 0; yy < h; yy++) {
+				if (y + yy < 0 || y + yy >= buffer[0].length) continue;
+				
+				buffer[x + xx][y + yy] = color;
+			}
+		}
+	}
+
+	private static HashMap<Character, Integer> createCharacterHashMap() {
+		HashMap<Character, Integer> hm = new HashMap<Character, Integer>();
+		String[] s = { 
+				"ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?\"'/\\<>()[]{}", 
+				"abcdefghijklmnopqrstuvwxyz_                 ", 
+				"0123456789+-=*:;                            "
+		};
+		for (int j = 0; j < s.length; j++) 
+			for (int i = 0; i < s[j].length(); i++) 
+				hm.put(s[j].charAt(i), i + j * s[0].length());
+		return hm;
 	}
 	
 	public Sprite getSubSprite(int x, int y, int width, int height) {

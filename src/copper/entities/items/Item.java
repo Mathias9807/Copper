@@ -13,7 +13,6 @@ public class Item extends Entity {
 		width 	= type.sprite.width;
 		height	= type.sprite.height;
 		sprite 	= type.sprite;
-		
 		speed 	= 0;
 		armor 	= 0;
 		setBaseHealth(1);
@@ -23,7 +22,6 @@ public class Item extends Entity {
 		if (!(collider instanceof Item) && alive) {
 			collider.inventory.add(type);
 			alive = false;
-			System.out.println("htettfdgsertgerrfetgre");
 		}
 	}
 	

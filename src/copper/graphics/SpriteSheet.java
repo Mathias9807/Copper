@@ -1,10 +1,10 @@
 package copper.graphics;
 
-public class AnimSprite extends Sprite {
+public class SpriteSheet extends Sprite {
 	
 	private Sprite[][] spriteSheet;
 
-	public AnimSprite(String path, int sWidth, int sHeight) {
+	public SpriteSheet(String path, int sWidth, int sHeight) {
 		super(path);
 		width 	= sWidth;
 		height 	= sHeight;
@@ -31,9 +31,21 @@ public class AnimSprite extends Sprite {
 	public Sprite getSprite(int x, int y) {
 		return spriteSheet[x][y];
 	}
+	
+	public Sprite getSprite(int i) {
+		return getSprite(i % spriteSheet.length, i / spriteSheet.length);
+	}
 
 	public Sprite[][] getSpriteSheet() {
 		return spriteSheet;
+	}
+	
+	public int getFullWidth() {
+		return spriteSheet.length * width;
+	}
+	
+	public int getFullHeight() {
+		return spriteSheet[0].length * height;
 	}
 
 }

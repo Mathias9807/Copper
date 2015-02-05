@@ -5,6 +5,10 @@ import copper.graphics.*;
 public class InterfaceMenu extends Menu {
 	
 	private int healthXOffs = 5, healthYOffs = 5;
+	
+	public InterfaceMenu() {
+		freezeWorld = false;
+	}
 
 	public void render(Screen s) {
 		Sprite.healthBar.getSprite(0, 0).renderSprite(s, healthXOffs + Screen.getCamX(), healthYOffs + Screen.getCamY());
