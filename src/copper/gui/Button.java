@@ -35,8 +35,8 @@ public class Button extends Component {
 	}
 	
 	public void render(Screen s) {
-		Sprite.fillRect(s.pixels, 0x404030, x - 1, y - 1, width + 2, height + 2);
-		Sprite.renderText(s.pixels, text, selected ? 0xFFFF00 : 0xFFFFFF, x, y);
+		Sprite.fillRect(s.pixels, 0x404030, x - 1 + xOrigin, y - 1 + yOrigin, width + 2, height + 2);
+		Sprite.renderText(s.pixels, text, selected ? 0xFFFF00 : 0xFFFFFF, x + xOrigin, y + yOrigin);
 	}
 	
 	public int getWidth() {

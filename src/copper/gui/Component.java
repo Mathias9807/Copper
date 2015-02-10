@@ -10,7 +10,7 @@ import copper.graphics.*;
  */
 public class Component {
 	
-	protected int x, y, width, height;
+	protected int x, y, width, height, xOrigin, yOrigin;
 	
 	public void render(Screen s) {
 	}
@@ -20,6 +20,11 @@ public class Component {
 		this.y = y;
 		width  = w;
 		height = h;
+	}
+	
+	public void setOrigin(int x, int y) {
+		xOrigin = x;
+		yOrigin = y;
 	}
 
 	public void setX(int x) { this.x = x; }

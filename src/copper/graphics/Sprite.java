@@ -149,8 +149,9 @@ public class Sprite {
 	
 	public static void renderText(int[][] buffer, String text, int color, double x, double y) {
 		for (int i = 0; i < text.length(); i++) {
-			Sprite ch = font.getSprite(characters.get(text.charAt(i)));
-			if (ch == null) continue;
+			Integer c = characters.get(text.charAt(i));
+			if (c == null) continue;
+			Sprite ch = font.getSprite(c);
 			
 			for (int xx = 0; xx < ch.width; xx++) {
 				if (x + xx < 0 || x + xx + i * ch.width >= buffer.length) continue;

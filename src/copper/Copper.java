@@ -29,6 +29,8 @@ public class Copper extends Canvas implements Runnable, ComponentListener {
 	 */
 	public static final String		TITLE			= "Copper Alpha";
 
+	public static 		boolean 	applet	 		= false;
+	
 	public static final boolean 	FULLSCREEN 		= false;
 	public static final DisplayMode DISPLAYMODE 	= GraphicsEnvironment.getLocalGraphicsEnvironment()
 			.getDefaultScreenDevice().getDisplayMode();
@@ -129,17 +131,31 @@ public class Copper extends Canvas implements Runnable, ComponentListener {
 			if (resized) {
 				resized = false;
 				
-				WIDTH = window.getWidth() / Copper.SCALE;
-				HEIGHT = window.getHeight() / Copper.SCALE;
-
-				engine.img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-				engine.pixels = ((DataBufferInt) engine.img.getRaster().getDataBuffer()).getData();
-				
-				screen.width = WIDTH;
-				screen.height = HEIGHT;
-				screen.pixels = new int[WIDTH][HEIGHT];
-				
-				Menu.current.initComponents();
+				if (applet) {
+					WIDTH = getWidth() / Copper.SCALE;
+					HEIGHT = getHeight() / Copper.SCALE;
+					
+					img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+					pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
+					
+					screen.width = WIDTH;
+					screen.height = HEIGHT;
+					screen.pixels = new int[WIDTH][HEIGHT];
+					
+					Menu.current.initComponents();
+				}else {
+					WIDTH = window.getWidth() / Copper.SCALE;
+					HEIGHT = window.getHeight() / Copper.SCALE;
+					
+					img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+					pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
+					
+					screen.width = WIDTH;
+					screen.height = HEIGHT;
+					screen.pixels = new int[WIDTH][HEIGHT];
+					
+					Menu.current.initComponents();
+				}
 			}
 		}
 	}
