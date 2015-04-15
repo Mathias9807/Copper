@@ -17,7 +17,7 @@ public class Copper extends Canvas implements Runnable, ComponentListener {
 
 	private static final long serialVersionUID 		= 1L;
 	
-	private static Copper engine;
+	public static Copper engine;
 	
 	/**
 	 * The current operative system. 
@@ -33,8 +33,8 @@ public class Copper extends Canvas implements Runnable, ComponentListener {
 	
 	public static final boolean 	FULLSCREEN 		= false;
 	public static final DisplayMode DISPLAYMODE 	= GraphicsEnvironment.getLocalGraphicsEnvironment()
-			.getDefaultScreenDevice().getDisplayMode();
-	public static final boolean 	FPS_LOCK		= false;
+													  .getDefaultScreenDevice().getDisplayMode();
+	public static final boolean 	FPS_LOCK		= true;
 	
 	public static final int 		SCALE 			= 4;
 	public static final double 		ASPECT_RATIO	= (double) DISPLAYMODE.getHeight() / DISPLAYMODE.getWidth();
@@ -54,7 +54,7 @@ public class Copper extends Canvas implements Runnable, ComponentListener {
 
 	private Thread 					thread;
 	private volatile BufferedImage 	img;
-	private boolean 				running 		= false;
+	public boolean 					running 		= false;
 	private volatile int[] 			pixels;
 	private Panel 					panel;
 	private Screen 					screen;
@@ -188,11 +188,6 @@ public class Copper extends Canvas implements Runnable, ComponentListener {
 	public void stop() {
 		if (!running) return;
 		running = false;
-		try {
-			thread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public static void main(String[] args) {
@@ -226,6 +221,13 @@ public class Copper extends Canvas implements Runnable, ComponentListener {
 		if (FULLSCREEN) gDevice.setFullScreenWindow(window);
 		
 		engine.start();
+		
+		try {
+			engine.thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.exit(0);
 	}
 
 	public void componentResized(ComponentEvent e) {

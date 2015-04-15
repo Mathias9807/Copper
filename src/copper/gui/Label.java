@@ -19,8 +19,8 @@ public class Label extends Component {
 		}
 	}
 	
-	public void render(Screen s) {
-		Sprite.renderText(s.pixels, text, 0xFFFFFF, x + xOrigin, y + yOrigin);
+	public void render(int[][] pixels) {
+		Sprite.renderText(pixels, Sprite.font, text, 0xFFFFFF, x + xOrigin, y + yOrigin);
 	}
 	
 }

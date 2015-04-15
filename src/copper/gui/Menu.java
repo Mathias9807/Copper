@@ -34,7 +34,7 @@ public class Menu {
 
 	public void render(Screen s) {
 		for (Component c : components) {
-			c.render(s);
+			c.render(s.pixels);
 		}
 	}
 	

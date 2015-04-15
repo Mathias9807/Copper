@@ -12,30 +12,32 @@ public class Sprite {
 	public static final SpriteSheet terrain 	= new SpriteSheet("/tiles/terrain.png", 16, 16);
 	
 //	Entities
-	public static final Sprite 	player		= new Sprite("/entities/player.png");
+	public static final Sprite 	player			= new Sprite("/entities/player.png");
 	public static final Sprite 	box 			= new Sprite("/entities/box.png");
-	public static final Sprite 	crate 		= new Sprite("/entities/crate.png");
-	public static final Sprite 	david 		= new Sprite("/entities/david.png");
+	public static final Sprite 	crate 			= new Sprite("/entities/crate.png");
+	public static final Sprite 	david 			= new Sprite("/entities/david.png");
 	
-	public static final SpriteSheet ghost	= new SpriteSheet("/entities/ghost.png", 16, 16);
-	public static final SpriteSheet wizard	= new SpriteSheet("/entities/wizard.png", 10, 12);
-	public static final SpriteSheet zombie	= new SpriteSheet("/entities/zombie.png", 14, 16);
+	public static final SpriteSheet ghost		= new SpriteSheet("/entities/ghost.png", 16, 16);
+	public static final SpriteSheet wizard		= new SpriteSheet("/entities/wizard.png", 10, 12);
+	public static final SpriteSheet zombie		= new SpriteSheet("/entities/zombie.png", 14, 16);
 	
 //	Particles
-	public static final Sprite 	flame		= new Sprite("/particles/flame.png");
-	public static final Sprite 	boulder		= new Sprite("/particles/boulder.png");
+	public static final Sprite 	flame			= new Sprite("/particles/flame.png");
+	public static final Sprite 	boulder			= new Sprite("/particles/boulder.png");
 	public static final Sprite 	ball			= new Sprite("/particles/ball.png");
+	public static final Sprite 	snowball		= new Sprite("/particles/snowball.png");
 	
 //	Miscellaneous
-	public static final Sprite 	shadow		= new Sprite("/shadow.png");
-	public static final Sprite 	shadowTiny	= shadow.getSubSprite(28, 0, 3, 1);
-	public static final Sprite 	shadowSmall	= shadow.getSubSprite(24, 0, 4, 3);
+	public static final Sprite 	shadow			= new Sprite("/shadow.png");
+	public static final Sprite 	shadowTiny		= shadow.getSubSprite(28, 0, 3, 1);
+	public static final Sprite 	shadowSmall		= shadow.getSubSprite(24, 0, 4, 3);
 	public static final Sprite 	shadowNormal	= shadow.getSubSprite(16, 0, 8, 4);
-	public static final Sprite 	shadowLarge	= shadow.getSubSprite(0, 0, 16, 8);
+	public static final Sprite 	shadowLarge		= shadow.getSubSprite(0, 0, 16, 8);
 	
 	public static final SpriteSheet healthBar	= new SpriteSheet("/gui/health bar.png", 8, 8);
 	
 	public static final SpriteSheet font		= new SpriteSheet("/gui/font.png", 6, 8);
+	public static final SpriteSheet fontSmall	= new SpriteSheet("/gui/font small.png", 4, 5);
 
 	public static HashMap<Character, Integer> characters = createCharacterHashMap();
 
@@ -147,7 +149,7 @@ public class Sprite {
 		}
 	}
 	
-	public static void renderText(int[][] buffer, String text, int color, double x, double y) {
+	public static void renderText(int[][] buffer, SpriteSheet font, String text, int color, double x, double y) {
 		for (int i = 0; i < text.length(); i++) {
 			Integer c = characters.get(text.charAt(i));
 			if (c == null) continue;
@@ -196,8 +198,8 @@ public class Sprite {
 		HashMap<Character, Integer> hm = new HashMap<Character, Integer>();
 		String[] s = { 
 				"ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?\"'/\\<>()[]{}", 
-				"abcdefghijklmnopqrstuvwxyz_                 ", 
-				"0123456789+-=*:;                            "
+				"abcdefghijklmnopqrstuvwxyz_               ", 
+				"0123456789+-=*:;                          "
 		};
 		for (int j = 0; j < s.length; j++) 
 			for (int i = 0; i < s[j].length(); i++) 

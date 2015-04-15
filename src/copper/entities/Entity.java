@@ -18,7 +18,6 @@ public class Entity {
 	
 	private long 		id;
 	public boolean 		alive;
-	public boolean 		isParticle;
 	
 	protected Sprite 	sprite, shadow;
 	public double 		x, y, z, speed, runningSpeed, mass, elevation;
@@ -26,8 +25,8 @@ public class Entity {
 	public double 		timeAlive;
 	
 	protected double	dx, dy, dz;
-	protected int		health, maxHealth;
-	protected double	armor;
+	protected int		maxHealth;
+	protected double	health, armor;
 	protected int		xAbsolute, yAbsolute, xRenderOff, yRenderOff;
 	
 	public Entity		attacker;
@@ -51,7 +50,6 @@ public class Entity {
 		armor 			= 1;
 		xAbsolute		= (int) x - xRenderOff;
 		yAbsolute		= (int) (y - z + elevation) - yRenderOff;
-		isParticle 		= false;
 		inventory 		= new Container(1);
 		id				= genId();
 		setSprite(new Sprite(width, height, 0xFFFFFF));
@@ -92,7 +90,7 @@ public class Entity {
 		if (!isGhost() && !(this instanceof Item)) 
 		for (int i = 0; i < entities.size(); i++){
 			Entity e = entities.get(i);
-			if (e == this || e.isGhost() || e.isParticle) continue;
+			if (e == this || e.isGhost() || e instanceof Particle) continue;
 			if (x + dx < e.x + e.width && xc + dx >= e.x && y + dy < e.y + e.height && yc + dy + 1 >= e.y) {
 				if (e instanceof Item) {
 					e.onCollision(this);
@@ -168,7 +166,7 @@ public class Entity {
 	public void damage(double damage, Entity attacker) {
 		this.attacker = attacker;
 		
-		if (damage < 0) health -= damage;
+		if (damage < 0) health = Math.min(health + -damage, maxHealth);
 		else health -= damage * armor;
 		
 		if ((int) (Panel.time * 60) % 3 == 0) new Particle(this, x + rand.nextInt(width), 
@@ -177,13 +175,7 @@ public class Entity {
 	}
 	
 	public static void damage(Entity attacked, double damage, Entity attacker) {
-		if (damage < 0) attacked.health -= damage;
-		else attacked.health -= damage * attacked.armor;
-		
-		if ((int) (Panel.time * 60) % 3 == 0) new Particle(attacked, attacked.x + rand.nextInt(attacked.width), 
-				attacked.y + rand.nextInt(attacked.height), 
-				attacked.z + 1, rand.nextDouble() * 360, rand.nextDouble() * 2).setColor(attacked.dmgColor)
-				.setTime((int) (rand.nextFloat() * 2));
+		attacked.damage(damage, attacker);
 	}
 	
 	protected void gravity() {
@@ -236,7 +228,7 @@ public class Entity {
 		return shadow;
 	}
 	
-	public int getHealth() {
+	public double getHealth() {
 		return health;
 	}
 	

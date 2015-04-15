@@ -5,6 +5,7 @@ import static copper.Panel.keys;
 import java.awt.event.KeyEvent;
 
 import copper.*;
+import copper.entities.items.Container;
 import copper.entities.particles.*;
 import copper.graphics.*;
 
@@ -25,6 +26,7 @@ public class Player extends Entity {
 		width   	= 8;
 		height  	= 8;
 		speed 		= 60;
+		inventory   = new Container(8);
 	}
 	
 	public void tick() {
@@ -39,12 +41,13 @@ public class Player extends Entity {
 		if (sprinting) speed = runningSpeed;
 		else speed = this.speed;
 		
-		if (keys[KeyEvent.VK_E]) Copper.level.loadLevel("/demo2.txt");
+		if (Panel.pressedKeys.contains(KeyEvent.VK_E) && inventory.itemsLeft() > 0) 
+			inventory.use(inventory.getIndexOfFirstItem(), this);
 		if (keys[KeyEvent.VK_W]) dy -= speed;
 		if (keys[KeyEvent.VK_S]) dy += speed;
 		if (keys[KeyEvent.VK_A]) dx -= speed;
 		if (keys[KeyEvent.VK_D]) dx += speed;
-		if (keys[KeyEvent.VK_SPACE]) dz += 0.005;
+		if (keys[KeyEvent.VK_SPACE]) dz += 0.05;
 		
 		int xx = Panel.getMouseX() / Copper.SCALE - (xAbsolute - Screen.getCamX()) - width / 2;
 		int yy = Panel.getMouseY() / Copper.SCALE - (yAbsolute - Screen.getCamY()) - height / 2;
@@ -61,7 +64,7 @@ public class Player extends Entity {
 		setSprite(Sprite.ghost.getSprite(spriteDirection, (int) (moving ? Panel.time * 4 : 0) % 2));
 		
 		if (Panel.pressedMButtons.contains(0)) 
-			new Ball(this, x + width / 2, y + height / 2, z, direction, 256);
+			new SnowBall(this, x + width / 2, y + height / 2, z, direction, 220);
 		
 		/*if (Panel.mButtons[0]) 
 			for (int i = 0; i < 2; i++) 

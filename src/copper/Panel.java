@@ -5,7 +5,6 @@ import static copper.levels.Level.entities;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-import javafx.scene.input.KeyCode;
 import copper.gui.Menu;
 
 /**

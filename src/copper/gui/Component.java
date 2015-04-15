@@ -12,7 +12,10 @@ public class Component {
 	
 	protected int x, y, width, height, xOrigin, yOrigin;
 	
-	public void render(Screen s) {
+	public void tick() {
+	}
+	
+	public void render(int[][] pixels) {
 	}
 	
 	public void setBounds(int x, int y, int w, int h) {

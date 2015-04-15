@@ -2,7 +2,7 @@ package copper.entities;
 
 import static copper.levels.Level.entities;
 import copper.Panel;
-import copper.entities.particles.Boulder;
+import copper.entities.particles.*;
 import copper.graphics.*;
 
 public class EarthWizard extends Entity {
@@ -23,6 +23,7 @@ public class EarthWizard extends Entity {
 	
 	public void tick() {
 		super.tick();
+		if (isValidTarget(Screen.getFocusedEntity())) target = Screen.getFocusedEntity();
 		if (!isValidTarget(target)) {
 			target = entities.get((int) (rand.nextDouble() * entities.size()));
 			return;
@@ -44,7 +45,7 @@ public class EarthWizard extends Entity {
 	}
 	
 	private boolean isValidTarget(Entity target) {
-		return target.alive && !target.equals(this) && !target.isGhost() && !target.isParticle && !(target instanceof MobSpawner);
+		return target.alive && !target.equals(this) && !target.isGhost() && !(target instanceof Particle) && !(target instanceof MobSpawner);
 	}
 
 }

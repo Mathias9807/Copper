@@ -1,5 +1,7 @@
 package copper.entities.items;
 
+import copper.entities.Entity;
+
 /**
  * Wrapper for an ItemType array. Handles adding and removing Items in the appropriate place. 
  * @author Mathias Johansson
@@ -71,6 +73,68 @@ public class Container {
 	 */
 	public ItemType get(int index) {
 		return contents[index];
+	}
+	
+	/**
+	 * Returns the index of the first Item not equal to null. If no such Item can be found, returns -1. 
+	 * @param index
+	 * @return
+	 */
+	
+	public int getIndexOfFirstItem() {
+		for (int i = 0; i < contents.length; i++) 
+			if (contents[i] != null) 
+				return i;
+		return -1;
+	}
+	
+	/**
+	 * Returns the first Item not equal to null. If no such Item can be found, returns null. 
+	 * @return
+	 */
+	
+	public ItemType getFirstItem() {
+		int index = getIndexOfFirstItem();
+		if (index == -1) 
+			return null;
+		
+		return contents[index];
+	}
+	
+	/**
+	 * Returns the length of the internal Item array. 
+	 * @return
+	 */
+	
+	public int size() {
+		return contents.length;
+	}
+	
+	/**
+	 * Returns the amount of Items not equal to null. 
+	 * @return
+	 */
+	
+	public int itemsLeft() {
+		int length = 0;
+
+		for (int i = 0; i < contents.length; i++) 
+			if (contents[i] != null) length++;
+		
+		return length;
+	}
+	
+	/**
+	 * Uses Item i on Entity e. If the Item runs out of uses it will also be removed from this Container. 
+	 * @param i
+	 * @param e
+	 */
+	
+	public void use(int i, Entity e) {
+		if (contents[i] == null) return;
+		
+		contents[i].use(e);
+		if (contents[i].usesLeft <= 0) remove(i);
 	}
 	
 }

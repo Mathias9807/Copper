@@ -9,6 +9,7 @@ import copper.entities.Entity;
 import copper.entities.items.Item;
 import copper.graphics.*;
 import copper.levels.Level;
+import copper.tiles.Tile;
 
 public class Particle extends Entity {
 
@@ -42,7 +43,6 @@ public class Particle extends Entity {
 		lifeTime 		= 1;
 		alive 			= true;
 		reactsOnTouch 	= false;
-		isParticle		= true;
 	}
 
 	public Particle setColor(int h) {
@@ -70,22 +70,29 @@ public class Particle extends Entity {
 			dx *= bounce;
 			dy *= bounce;
 			dz = dz * -bounce;
+			hitObstacle();
 		}else {
 			dz -= mass * Level.GRAVITY * Panel.delta;
 		}
-		dx -= dx * Level.AIR_DENSITY;
-		dy -= dy * Level.AIR_DENSITY;
-		dz -= dz * Level.AIR_DENSITY;
+		dx -= dx * Level.AIR_DENSITY * Panel.delta;
+		dy -= dy * Level.AIR_DENSITY * Panel.delta;
+		dz -= dz * Level.AIR_DENSITY * Panel.delta;
 
 		if (!isTileSolid(Panel.toTile((int) (x + dx * Panel.delta)), Panel.toTile((int) y))) x += dx * Panel.delta;
-		else dx *= -bounce;
+		else {
+			dx *= -bounce;
+			hitObstacle();
+		}
 		if (!isTileSolid(Panel.toTile((int) x), Panel.toTile((int) (y + dy * Panel.delta)))) y += dy * Panel.delta;
-		else dy *= -bounce;
+		else {
+			dy *= -bounce;
+			hitObstacle();
+		}
 		
 		if (reactsOnTouch) 
 			for (int i = 0; i < entities.size(); i++){
 				Entity e = entities.get(i);
-				if (e.isGhost() || e.isParticle || e instanceof Item) continue;
+				if (e.isGhost() || e instanceof Particle || e instanceof Item) continue;
 				if (hitEntities.contains(e.getId())) {
 					continue;
 				}
@@ -93,15 +100,19 @@ public class Particle extends Entity {
 						x + dx * Panel.delta >= e.x && y + dy * Panel.delta < e.y + e.height && y + dy * Panel.delta + 1 >= e.y) {
 					hitEntities.add(e.getId());
 					collidedWithEntity(e);
+					hitObstacle();
 				}
 			}
-		z += dz;
+		z += dz * Panel.delta;
 
 		if (timeAlive > lifeTime) alive = false;
 		xRenderOff	= sprite.width / 2;
 		yRenderOff	= sprite.height / 2;
 		xAbsolute 	= (int) x - xRenderOff;
 		yAbsolute 	= (int) (y - z + elevation) - yRenderOff;
+	}
+	
+	protected void hitObstacle() {
 	}
 
 	protected void collidedWithEntity(Entity collided) {

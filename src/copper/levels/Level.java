@@ -14,12 +14,13 @@ import copper.tiles.Tile;
 public class Level {
 
 	public static ArrayList<Entity> entities 	= new ArrayList<Entity>();
+	public static ArrayList<Player> players 	= new ArrayList<Player>();
 	public static Tile[][] tileMap;
 	public static int[][] levelBuffer;
 	
 //	Global physics variables
-	public static final double GRAVITY 		= 9.8;
-	public static final double AIR_DENSITY 	= 0.002;
+	public static final double GRAVITY 		= 512;
+	public static final double AIR_DENSITY 	= 0.1;
 	
 	public void loadLevel(String path) {
 		System.out.println("Loading Level: " + path);
@@ -30,7 +31,9 @@ public class Level {
 		levelBuffer = new int[tileMap.length << 4][tileMap[0].length << 4];
 		renderBuffer();
 		
-		entities.add(new Item(9, 5, 3, new ItemType()));
+		new Item(8, 5, 0, new HealthKit());
+		new Item(16, 5, 0, new HealthKit());
+		new Item(24, 5, 0, new HealthKit());
 	}
 	
 	private void renderBuffer(){
@@ -43,8 +46,9 @@ public class Level {
 	}
 	
 	/**
-	 * Deprecated method.
+	 * An old method of loading levels. Not recommended. 
 	 * @param path
+	 * @deprecated
 	 */
 	
 	private void loadFromImage(String path) {
@@ -86,7 +90,7 @@ public class Level {
 
 		System.out.println("Spawning Entities");
 		if (in.hasNext("ENTITY")) in.next();
-		while (in.hasNext()) spawnEntity(in.nextInt(), Panel.toPixel(in.nextInt()), Panel.toPixel(in.nextInt()), in.nextInt());
+		while (in.hasNext()) spawnEntity(in.nextInt(), Panel.toPixel(in.nextInt()), Panel.toPixel(in.nextInt()), Panel.toPixel(in.nextInt()));
 		in.close();
 	}
 
@@ -96,7 +100,7 @@ public class Level {
 			new Entity(x, y, z);
 			break;
 		case (1):
-			new Player(x, y, z);
+			players.add(new Player(x, y, z));
 			break;
 		case (2):
 			new Crate(x, y, z);
