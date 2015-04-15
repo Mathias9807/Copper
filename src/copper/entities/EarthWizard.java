@@ -9,6 +9,9 @@ public class EarthWizard extends Entity {
 	
 	private Entity target;
 	
+	private int shootSpeed = 2;
+	private double cooldown = shootSpeed;
+	
 	public EarthWizard(double x, double y, double z) {
 		super(x, y, z);
 		setBaseHealth(100);
@@ -33,8 +36,9 @@ public class EarthWizard extends Entity {
 		double yy = target.y + target.height / 2 - y - height / 2;
 		double angle = Math.toDegrees(Math.atan2(yy, xx));
 		setSprite(Sprite.wizard.getSprite((int) Math.min(angle / -90 + 2, 3), 0));
-		if ((int) (Panel.time * 60) % 60 == 0) {
+		if ((cooldown += Panel.delta) > shootSpeed) {
 			new Boulder(this, x + width / 2, y + height / 2, z + 1, angle);
+			cooldown = 0;
 		}
 		
 		move(dx * speed, dy * speed);

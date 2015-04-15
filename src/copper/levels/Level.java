@@ -6,7 +6,7 @@ import java.util.*;
 
 import javax.imageio.ImageIO;
 
-import copper.Panel;
+import copper.*;
 import copper.entities.*;
 import copper.entities.items.*;
 import copper.tiles.Tile;
@@ -17,6 +17,8 @@ public class Level {
 	public static ArrayList<Player> players 	= new ArrayList<Player>();
 	public static Tile[][] tileMap;
 	public static int[][] levelBuffer;
+	
+	public static Audio bgMusic = null;
 	
 //	Global physics variables
 	public static final double GRAVITY 		= 512;
@@ -34,6 +36,11 @@ public class Level {
 		new Item(8, 5, 0, new HealthKit());
 		new Item(16, 5, 0, new HealthKit());
 		new Item(24, 5, 0, new HealthKit());
+		
+		if (bgMusic != null) {
+			bgMusic.stop();
+			bgMusic.play(true);
+		}
 	}
 	
 	private void renderBuffer(){

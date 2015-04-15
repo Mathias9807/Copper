@@ -1,5 +1,6 @@
 package copper.entities.items;
 
+import copper.Audio;
 import copper.entities.Entity;
 import copper.graphics.Screen;
 
@@ -21,6 +22,9 @@ public class Item extends Entity {
 	protected void onCollision(Entity collider) {
 		if (!(collider instanceof Item) && alive) {
 			collider.inventory.add(type);
+			
+			Audio.playAndForget(Audio.pickup, false);
+			
 			alive = false;
 		}
 	}

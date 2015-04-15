@@ -1,6 +1,6 @@
 package copper.entities.particles;
 
-import copper.Panel;
+import copper.*;
 import copper.entities.Entity;
 import copper.graphics.Sprite;
 
@@ -22,6 +22,8 @@ public class SnowBall extends Particle {
 			new Particle(this, x, y, z + 1, 
 					i / 8d * 360 + ((Panel.time * 100) % 3) * 24, 15 + ((Panel.time * i * 1000) % 3) * 15)
 					.setColor(dmgColor).setBounce(0);
+		
+		Audio.playAndForget(Audio.snowhit, false);
 		
 		alive = false;
 	}

@@ -1,9 +1,10 @@
 package copper.gui;
 
+import com.sun.glass.events.KeyEvent;
+
 import copper.*;
-import copper.entities.*;
+import copper.entities.Entity;
 import copper.graphics.*;
-import copper.levels.Level;
 
 public class InterfaceMenu extends Menu {
 	
@@ -28,6 +29,9 @@ public class InterfaceMenu extends Menu {
 		}else if (newHealth < currentHealth) {
 			currentHealth -= Math.min(150 * Panel.delta, currentHealth - newHealth);
 		}
+		
+		if (Panel.pressedKeys.contains(KeyEvent.VK_ESCAPE)) 
+			current = new PauseMenu();
 	}
 
 	public void render(Screen s) {

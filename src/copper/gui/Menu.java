@@ -15,11 +15,6 @@ public class Menu {
 	public ArrayList<Component> components = new ArrayList<Component>();
 	
 	public void tick() {
-		if (pressedKeys.contains(KeyEvent.VK_ESCAPE)) {
-			if (current instanceof PauseMenu) current = new InterfaceMenu();
-			else current = new PauseMenu();
-		}
-		
 		current.tickComponents();
 	}
 	

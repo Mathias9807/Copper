@@ -27,7 +27,7 @@ public class Panel implements KeyListener, FocusListener, MouseListener, MouseMo
 	public static ArrayList<Character> 	typedKeys = new ArrayList<Character>();
 	public static boolean				backspaceHit = false;
 	
-	public static boolean[] 			mButtons = new boolean[3];
+	public static boolean[] 			mButtons = new boolean[12];
 	public static ArrayList<Integer> 	pressedMButtons = new ArrayList<Integer>();
 	private static int 					xMouse, yMouse;
 	

@@ -63,8 +63,9 @@ public class Player extends Entity {
 		if (dx == 0 && dy == 0) moving = false;
 		setSprite(Sprite.ghost.getSprite(spriteDirection, (int) (moving ? Panel.time * 4 : 0) % 2));
 		
-		if (Panel.pressedMButtons.contains(0)) 
+		if (Panel.pressedMButtons.contains(0)) {
 			new SnowBall(this, x + width / 2, y + height / 2, z, direction, 220);
+		}
 		
 		/*if (Panel.mButtons[0]) 
 			for (int i = 0; i < 2; i++) 

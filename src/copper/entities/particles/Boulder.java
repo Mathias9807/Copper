@@ -24,8 +24,10 @@ public class Boulder extends Particle {
 	}
 	
 	protected void collidedWithEntity(Entity e) {
-		e.damage(50, parent);
-		alive = false;
+		if (alive) {
+			e.damage(50, parent);
+			alive = false;
+		}
 	}
 	
 	public void dead() {
