@@ -30,6 +30,7 @@ public class Entity {
 	protected int		xAbsolute, yAbsolute, xRenderOff, yRenderOff;
 	
 	public Entity		attacker;
+	public Entity 		target;
 	
 	public Container	inventory;
 	

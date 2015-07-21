@@ -9,15 +9,14 @@ import copper.entities.Entity;
 import copper.entities.items.Item;
 import copper.graphics.*;
 import copper.levels.Level;
-import copper.tiles.Tile;
 
 public class Particle extends Entity {
 
 	protected Entity 	parent;
-	protected double 	lifeTime;
 	protected double 	dx, dy, dz, rot, speed, bounce, spriteRot;
 	protected boolean 	reactsOnTouch;
 	protected ArrayList<Long> hitEntities;
+	public double 	lifeTime;
 
 	public Particle(Entity p, double x, double y, double z, double rot, double speed) {
 		super(x, y, z);
@@ -32,6 +31,7 @@ public class Particle extends Entity {
 		dx 				= Math.cos(Math.toRadians(rot)) * speed;
 		dy 				= Math.sin(Math.toRadians(rot)) * speed;
 		dz 				= 0.5;
+		this.speed		= speed;
 		spriteRot 		= 0;
 		width 			= 1;
 		height 			= 1;

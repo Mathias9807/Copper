@@ -26,6 +26,7 @@ public class Sprite {
 	public static final Sprite 	boulder			= new Sprite("/particles/boulder.png");
 	public static final Sprite 	ball			= new Sprite("/particles/ball.png");
 	public static final Sprite 	snowball		= new Sprite("/particles/snowball.png");
+	public static final Sprite 	magic			= new Sprite("/particles/magic.png");
 	
 //	Miscellaneous
 	public static final Sprite 	shadow			= new Sprite("/shadow.png");

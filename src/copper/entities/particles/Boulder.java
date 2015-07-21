@@ -7,9 +7,9 @@ import copper.graphics.Sprite;
 public class Boulder extends Particle {
 
 	public Boulder(Entity p, double x, double y, double z, double rot) {
-		super(p, x, y, z, rot, 180);
+		super(p, x, y, z, rot, 90);
 		setSprite(Sprite.boulder);
-		dz 				= 0.4;
+		dz 				= 10;
 		mass  			= 0.1;
 		bounce  		= 0;
 		reactsOnTouch	= true;

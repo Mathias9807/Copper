@@ -5,6 +5,8 @@ import copper.graphics.Sprite;
 
 public class Flame extends Particle {
 	
+	public int damage = 1;
+	
 	/**
 	 * Pre-made constructor.
 	 * @param x
@@ -42,7 +44,7 @@ public class Flame extends Particle {
 	}
 	
 	protected void collidedWithEntity(Entity collided) {
-		collided.damage(1, parent);
+		collided.damage(damage, parent);
 	}
 
 }
