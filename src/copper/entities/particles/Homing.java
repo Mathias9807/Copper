@@ -43,5 +43,9 @@ public class Homing extends Particle {
 		collided.damage(damage, parent);
 		alive = false;
 	}
+	
+	protected void hitObstacle() {
+		alive = false;
+	}
 
 }

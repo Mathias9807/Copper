@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 public class Sprite {
 
 //	Tiles
-	public static final SpriteSheet terrain 	= new SpriteSheet("/tiles/terrain.png", 16, 16);
+	public static final SpriteSheet terrain 	= new SpriteSheet("/tiles/cave.png", 16, 16);
 	
 //	Entities
 	public static final Sprite 	player			= new Sprite("/entities/player.png");
@@ -148,6 +148,10 @@ public class Sprite {
 				screen.pixels[xPos + xx][yPos + yy] = buffer[(int) (xx / xOff)][(int) (yy / yOff)];
 			}
 		}
+	}
+	
+	public static void render(int[][] pixelBuffer, int tile, int x, int y){
+		Sprite.terrain.getSprite(tile).renderLevel(pixelBuffer, x, y);
 	}
 	
 	public static void renderText(int[][] buffer, SpriteSheet font, String text, int color, double x, double y) {

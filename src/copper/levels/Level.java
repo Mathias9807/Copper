@@ -1,21 +1,18 @@
 package copper.levels;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.*;
-
-import javax.imageio.ImageIO;
 
 import copper.*;
 import copper.entities.*;
 import copper.entities.items.*;
-import copper.tiles.Tile;
+import copper.graphics.Sprite;
 
 public class Level {
 
 	public static ArrayList<Entity> entities 	= new ArrayList<Entity>();
 	public static ArrayList<Player> players 	= new ArrayList<Player>();
-	public static Tile[][] tileMap;
+	public static int[][] tileMap;
+	public static boolean[] solid;
 	public static int[][] levelBuffer;
 	
 	public static Audio bgMusic = null;
@@ -26,16 +23,9 @@ public class Level {
 	
 	public void loadLevel(String path) {
 		System.out.println("Loading Level: " + path);
-		if (path.endsWith("txt")) 
-			loadFromFile("/copper/levels" + path);
-		else
-			loadFromImage("/levels" + path);
+		loadFromFile("/copper/levels" + path);
 		levelBuffer = new int[tileMap.length << 4][tileMap[0].length << 4];
 		renderBuffer();
-		
-		new Item(8, 5, 0, new HealthKit());
-		new Item(16, 5, 0, new HealthKit());
-		new Item(24, 5, 0, new HealthKit());
 		
 		if (bgMusic != null) {
 			bgMusic.stop();
@@ -46,36 +36,8 @@ public class Level {
 	private void renderBuffer(){
 		for (int x = 0; x < Level.tileMap.length; x++) {
 			for (int y = 0; y < Level.tileMap[0].length; y++) {
-				if (tileMap[x][y] == null) Tile.tile.render(levelBuffer, x << 4, y << 4);
-				tileMap[x][y].render(levelBuffer, x << 4, y << 4);
-			}
-		}
-	}
-	
-	/**
-	 * An old method of loading levels. Not recommended. 
-	 * @param path
-	 * @deprecated
-	 */
-	
-	private void loadFromImage(String path) {
-		BufferedImage b;
-		try {
-			b = ImageIO.read(this.getClass().getResource(path));
-		} catch (IOException e) {
-			b = null;
-			System.err.println("Failed to load Level. (Image)");
-		}
-
-		tileMap = new Tile[b.getWidth()][b.getHeight()];
-
-		for (int x = 0; x < b.getWidth(); x++) {
-			for (int y = 0; y < b.getHeight(); y++) {
-				tileMap[x][y] = Tile.tiles[(b.getRGB(x, y) & 0xffffff) >> 4];
-
-				int alpha = (b.getRGB(x, y) >> 24) & 0xff;
-				if (alpha == 255) continue;
-				spawnEntity(alpha, x << 4, y << 4, 0);
+				if (tileMap[x][y] == -1) continue;
+				Sprite.render(levelBuffer, tileMap[x][y], x << 4, y << 4);
 			}
 		}
 	}
@@ -84,14 +46,19 @@ public class Level {
 		Scanner in = null;
 		in = new Scanner(this.getClass().getResourceAsStream(path));
 
-		int width = in.nextInt(), height = in.nextInt();
-		tileMap = new Tile[width][height];
+		int width = in.nextInt(), height = in.nextInt(), solids = in.nextInt();
+		tileMap = new int[width][height];
+		solid = new boolean[solids];
 
 		System.out.println("Building Level");
+		for (int i = 0; i < solids; i++) {
+			solid[i] = (in.nextInt() == 1) ? true : false;
+		}
+		
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				if (in.hasNext("ENTITY")) break;
-				tileMap[x][y] = Tile.tiles[in.nextInt()];
+				tileMap[x][y] = in.nextInt();
 			}
 		}
 
@@ -110,7 +77,7 @@ public class Level {
 			players.add(new Player(x, y, z));
 			break;
 		case (2):
-			new Crate(x, y, z);
+			new Item(x, y, z, new HealthKit());
 			break;
 		case (3):
 			new Ghost(x, y, z);

@@ -13,13 +13,13 @@ public class Wait extends Routine {
 	}
 	
 	public int run(Entity e) {
+		if (state != RUNNING) 
+			startTime = Panel.time;
+		
 		if (Panel.time - startTime > waitTime) 
 			return succeed();
+		
 		return running();
-	}
-	
-	public void reset() {
-		startTime = Panel.time;
 	}
 	
 }

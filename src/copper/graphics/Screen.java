@@ -97,10 +97,15 @@ public class Screen {
 	}
 	
 	public void centerScreen() {
+		if (entities.size() == 0) return;
 		try {
-			if (!focusedEntity.alive) focusedEntity = entities.get(0);
+			if (!focusedEntity.alive) {
+				if (focusedEntity.attacker != null) 
+					focusedEntity = focusedEntity.attacker;
+				else 
+					focusedEntity = entities.get(0);
+			}
 		}catch (IndexOutOfBoundsException e) {
-			System.err.println("There are no entities left. D:");
 		}
 		
 		int xFocus = (int) (focusedEntity.x + focusedEntity.width / 2) - width / 2;

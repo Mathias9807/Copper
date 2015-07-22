@@ -193,7 +193,7 @@ public class Entity {
 	protected boolean isTileSolid(int x, int y) {
 		if (x < 0 || y < 0) return true;
 		if (x >= Level.tileMap.length || y >= Level.tileMap[0].length) return true;
-		return Level.tileMap[x][y].solid();
+		return Level.solid[Level.tileMap[x][y]];
 	}
 	
 	public boolean isPushable()						{ return true; 							}
