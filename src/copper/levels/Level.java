@@ -21,10 +21,12 @@ public class Level {
 	public static final double GRAVITY 		= 512;
 	public static final double AIR_DENSITY 	= 0.1;
 	
+	public static final int    TILE_SIZE 	= 16;
+	
 	public void loadLevel(String path) {
 		System.out.println("Loading Level: " + path);
 		loadFromFile("/copper/levels" + path);
-		levelBuffer = new int[tileMap.length << 4][tileMap[0].length << 4];
+		levelBuffer = new int[tileMap.length * TILE_SIZE][tileMap[0].length * TILE_SIZE];
 		renderBuffer();
 		
 		if (bgMusic != null) {
@@ -37,7 +39,7 @@ public class Level {
 		for (int x = 0; x < Level.tileMap.length; x++) {
 			for (int y = 0; y < Level.tileMap[0].length; y++) {
 				if (tileMap[x][y] == -1) continue;
-				Sprite.render(levelBuffer, tileMap[x][y], x << 4, y << 4);
+				Sprite.render(levelBuffer, tileMap[x][y], x * TILE_SIZE, y * TILE_SIZE);
 			}
 		}
 	}
@@ -68,7 +70,7 @@ public class Level {
 		in.close();
 	}
 
-	public void spawnEntity(int ID, int x, int y, int z) {
+	public void spawnEntity(int ID, double x, double y, double z) {
 		switch (ID) {
 		case (0):
 			new Entity(x, y, z);

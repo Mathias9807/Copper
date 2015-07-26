@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 import copper.gui.Menu;
+import copper.levels.Level;
 
 /**
  * Handles game updates and Keyboard/Mouse input.
@@ -127,8 +128,8 @@ public class Panel implements KeyListener, FocusListener, MouseListener, MouseMo
 	 * @return
 	 */
 	
-	public static int toTile(int i) {
-		return i >> 4;
+	public static double toTile(double d) {
+		return d / Level.TILE_SIZE;
 	}
 	
 	/**
@@ -137,8 +138,8 @@ public class Panel implements KeyListener, FocusListener, MouseListener, MouseMo
 	 * @return
 	 */
 	
-	public static int toPixel(int i) {
-		return i << 4;
+	public static double toPixel(double d) {
+		return d * Level.TILE_SIZE;
 	}
 	
 }

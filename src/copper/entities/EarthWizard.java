@@ -1,14 +1,9 @@
 package copper.entities;
 
-import java.util.function.IntSupplier;
-
 import copper.ai.*;
-import copper.entities.particles.*;
 import copper.graphics.*;
 
 public class EarthWizard extends Entity {
-	
-	private Routine routine;
 	
 	public EarthWizard(double x, double y, double z) {
 		super(x, y, z);

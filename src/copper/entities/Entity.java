@@ -6,6 +6,7 @@ import static copper.levels.Level.entities;
 import java.util.Random;
 
 import copper.Panel;
+import copper.ai.Routine;
 import copper.entities.items.*;
 import copper.entities.particles.Particle;
 import copper.graphics.*;
@@ -24,7 +25,7 @@ public class Entity {
 	public int 			width, height, dmgColor;
 	public double 		timeAlive;
 	
-	protected double	dx, dy, dz;
+	public double		dx, dy, dz;
 	protected int		maxHealth;
 	protected double	health, armor;
 	protected int		xAbsolute, yAbsolute, xRenderOff, yRenderOff;
@@ -33,6 +34,8 @@ public class Entity {
 	public Entity 		target;
 	
 	public Container	inventory;
+	
+	public Routine 		routine;
 	
 	public Entity(double x, double y, double z){
 		this.x 			= x;
@@ -190,10 +193,11 @@ public class Entity {
 		}
 	}
 	
-	protected boolean isTileSolid(int x, int y) {
+	public static boolean isTileSolid(double x, double y) {
 		if (x < 0 || y < 0) return true;
 		if (x >= Level.tileMap.length || y >= Level.tileMap[0].length) return true;
-		return Level.solid[Level.tileMap[x][y]];
+		if (Level.tileMap[(int) x][(int) y] >= Level.solid.length) return false;
+		return Level.solid[Level.tileMap[(int) x][(int) y]];
 	}
 	
 	public boolean isPushable()						{ return true; 							}

@@ -78,12 +78,12 @@ public class Particle extends Entity {
 		dy -= dy * Level.AIR_DENSITY * Panel.delta;
 		dz -= dz * Level.AIR_DENSITY * Panel.delta;
 
-		if (!isTileSolid(Panel.toTile((int) (x + dx * Panel.delta)), Panel.toTile((int) y))) x += dx * Panel.delta;
+		if (!isTileSolid((int) Panel.toTile(x + dx * Panel.delta), (int) Panel.toTile(y))) x += dx * Panel.delta;
 		else {
 			dx *= -bounce;
 			hitObstacle();
 		}
-		if (!isTileSolid(Panel.toTile((int) x), Panel.toTile((int) (y + dy * Panel.delta)))) y += dy * Panel.delta;
+		if (!isTileSolid((int) Panel.toTile(x), (int) Panel.toTile(y + dy * Panel.delta))) y += dy * Panel.delta;
 		else {
 			dy *= -bounce;
 			hitObstacle();

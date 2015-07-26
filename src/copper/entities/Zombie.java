@@ -2,6 +2,7 @@ package copper.entities;
 
 import static copper.levels.Level.entities;
 import copper.Panel;
+import copper.ai.*;
 import copper.entities.items.Item;
 import copper.entities.particles.Particle;
 import copper.graphics.*;
@@ -22,11 +23,30 @@ public class Zombie extends Entity {
 		dmgColor 	= 0x22AA22;
 		
 		target = Screen.getFocusedEntity();
+		
+		routine = new Sequence(
+			new Wait(0.5), 
+			new FindTarget(), 
+			new NavigateTo(16),
+			new Loop(
+				new Sequence(
+					new IsInReach(24), 
+					new Custom((RoutineInterface) (e) -> {
+						e.target.damage(10, e);
+						return Routine.SUCCESS;
+					}), 
+					new Wait(0.2)
+				)
+			)
+		);
 	}
 	
 	public void tick() {
 		super.tick();
-		if (!isValidTarget(target)) {
+		
+		routine.run(this);
+		
+		/*if (!isValidTarget(target)) {
 			target = entities.get((int) (rand.nextDouble() * entities.size()));
 			return;
 		}
@@ -40,13 +60,13 @@ public class Zombie extends Entity {
 			if (targetY < thisY) dy = -speed;
 		}else {
 			Entity.damage(target, 50 * Panel.delta, this);
-		}
+		}*/
 		move(dx, dy);
 	}
 	
-	protected void onCollision(Entity collider) {
+	/*protected void onCollision(Entity collider) {
 		collider.damage(0.2, this);
-	}
+	}*/
 	
 	private boolean isValidTarget(Entity target) {
 		return target.alive && !target.equals(this) && !target.isGhost() && !(target instanceof Particle) && !(target instanceof Item);
