@@ -22,9 +22,11 @@ public class Audio {
 	 * A collection of all loaded sounds. 
 	 */
 	private static ArrayList<Audio> sounds = new ArrayList<Audio>();
-	
+
 	public static Audio test = load("test.wav");
+	public static Audio spawn = load("Spawn.wav");
 	public static Audio hit = load("hit.wav");
+	public static Audio bop = load("bop.wav");
 	public static Audio snowhit = load("snowhit.wav");
 	public static Audio pickup = load("pickup.wav");
 	public static Audio boost = load("boost.wav");

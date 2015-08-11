@@ -27,6 +27,8 @@ public class Player extends Entity {
 		height  	= 8;
 		speed 		= 60;
 		inventory   = new Container(8);
+		
+		Audio.playAndForget(Audio.spawn, false);
 	}
 	
 	public void tick() {

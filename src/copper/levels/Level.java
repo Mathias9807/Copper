@@ -1,16 +1,18 @@
 package copper.levels;
 
+import java.nio.charset.Charset;
 import java.util.*;
 
 import copper.*;
 import copper.entities.*;
-import copper.entities.items.*;
 import copper.graphics.Sprite;
 
 public class Level {
 
 	public static ArrayList<Entity> entities 	= new ArrayList<Entity>();
 	public static ArrayList<Player> players 	= new ArrayList<Player>();
+	public static ArrayList<Spawner> spawners	= new ArrayList<Spawner>();
+	
 	public static int[][] tileMap;
 	public static boolean[] solid;
 	public static int[][] levelBuffer;
@@ -23,6 +25,7 @@ public class Level {
 	
 	public static final int    TILE_SIZE 	= 16;
 	
+	private String currentLevelPath;
 	private boolean mapHasChanged = true;
 	
 	public void loadLevel(String path) {
@@ -30,10 +33,37 @@ public class Level {
 		loadFromFile("/copper/levels" + path);
 		levelBuffer = new int[tileMap.length * TILE_SIZE][tileMap[0].length * TILE_SIZE];
 		
+		for (int i = 0; i < spawners.size(); i++) 
+			spawners.get(i).spawnEntity();
+		
 		if (bgMusic != null) {
 			bgMusic.stop();
 			bgMusic.play(true);
 		}
+	}
+	
+	public void writeLevel() {
+		StringBuilder s = new StringBuilder();
+		
+		s.append(tileMap.length + " " + tileMap[0].length + " " + solid.length + "\n");
+		
+		for (boolean b : solid) s.append((b ? 1 : 0) + " ");
+		s.append("\n");
+		if (tileMap.length > 0) 
+			for (int y = 0; y < tileMap[0].length; y++) {
+				for (int x = 0; x < tileMap.length; x++) 
+					s.append(tileMap[x][y] + " ");
+				s.append("\n");
+			}
+		
+		s.append("ENTITY\n");
+		for (int i = 0; i < spawners.size(); i++) 
+			s.append(spawners.get(i).getEntityID() + 
+					" " + (int) Panel.toTile(spawners.get(i).getX()) + 
+					" " + (int) Panel.toTile(spawners.get(i).getY()) + 
+					" " + (int) Panel.toTile(spawners.get(i).getZ()) + "\n");
+		
+		FileHandler.write(s.toString().getBytes(Charset.forName("UTF-8")), "save0.txt");
 	}
 	
 	public void setTile(int tile, int x, int y) {
@@ -56,6 +86,7 @@ public class Level {
 	}
 	
 	private void loadFromFile(String path) {
+		currentLevelPath = path;
 		Scanner in = null;
 		in = new Scanner(this.getClass().getResourceAsStream(path));
 
@@ -77,34 +108,12 @@ public class Level {
 
 		System.out.println("Spawning Entities");
 		if (in.hasNext("ENTITY")) in.next();
-		while (in.hasNext()) spawnEntity(in.nextInt(), Panel.toPixel(in.nextInt()), Panel.toPixel(in.nextInt()), Panel.toPixel(in.nextInt()));
+		while (in.hasNext()) 
+			spawners.add(new Spawner(in.nextInt(), 
+					Panel.toPixel(in.nextInt()), 
+					Panel.toPixel(in.nextInt()), 
+					Panel.toPixel(in.nextInt())));
 		in.close();
-	}
-
-	public void spawnEntity(int ID, double x, double y, double z) {
-		switch (ID) {
-		case (0):
-			new Entity(x, y, z);
-			break;
-		case (1):
-			players.add(new Player(x, y, z));
-			break;
-		case (2):
-			new Item(x, y, z, new HealthKit());
-			break;
-		case (3):
-			new Ghost(x, y, z);
-			break;
-		case (4):
-			new Zombie(x, y, z);
-			break;
-		case (5):
-			new MobSpawner(x, y, z);
-			break;
-		case (6):
-			new EarthWizard(x, y, z);
-			break;
-		}
 	}
 	
 	public boolean hasMapChanged() {

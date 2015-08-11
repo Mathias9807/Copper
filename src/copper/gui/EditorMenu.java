@@ -46,9 +46,7 @@ public class EditorMenu extends Menu {
 		if (Panel.pressedKeys.contains(KeyEvent.VK_ESCAPE)) {
 			Copper.EDITOR_MODE = false;
 			Level.entities.remove(Panel.editor);
-			for (int i = 0; i < Level.entities.size(); i++) 
-				if (Level.entities.get(i) instanceof Player) 
-					Screen.setFocus(Level.entities.get(i));
+			Screen.setFocus(Level.players.get(0));
 			
 			current = new PauseMenu();
 		}
