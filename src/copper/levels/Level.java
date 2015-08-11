@@ -1,5 +1,6 @@
 package copper.levels;
 
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
 
@@ -15,7 +16,7 @@ public class Level {
 	
 	public static int[][] tileMap;
 	public static boolean[] solid;
-	public static int[][] levelBuffer;
+	public static int[][] levelBuffer = new int[0][0];
 	
 	public static Audio bgMusic = null;
 	
@@ -26,11 +27,11 @@ public class Level {
 	public static final int    TILE_SIZE 	= 16;
 	
 	private String currentLevelPath;
-	private boolean mapHasChanged = true;
+	private boolean mapHasChanged = false;
 	
 	public void loadLevel(String path) {
 		System.out.println("Loading Level: " + path);
-		loadFromFile("/copper/levels" + path);
+		loadFromFile(path);
 		levelBuffer = new int[tileMap.length * TILE_SIZE][tileMap[0].length * TILE_SIZE];
 		
 		for (int i = 0; i < spawners.size(); i++) 
@@ -88,7 +89,14 @@ public class Level {
 	private void loadFromFile(String path) {
 		currentLevelPath = path;
 		Scanner in = null;
-		in = new Scanner(this.getClass().getResourceAsStream(path));
+		if (path.charAt(0) == '/')
+			in = new Scanner(this.getClass().getResourceAsStream("/copper/levels" + path));
+		else 
+			try {
+				in = new Scanner(new File(FileHandler.FILE_PATH + path));
+			} catch (FileNotFoundException e) {
+				System.err.println("Could not find level file. ");
+			}
 
 		int width = in.nextInt(), height = in.nextInt(), solids = in.nextInt();
 		tileMap = new int[width][height];
@@ -105,6 +113,7 @@ public class Level {
 				tileMap[x][y] = in.nextInt();
 			}
 		}
+		mapHasChanged = true;
 
 		System.out.println("Spawning Entities");
 		if (in.hasNext("ENTITY")) in.next();

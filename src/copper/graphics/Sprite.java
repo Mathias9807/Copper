@@ -8,6 +8,8 @@ import javax.imageio.ImageIO;
 
 public class Sprite {
 
+	public static final Sprite 	title			= new Sprite("/title.png");
+	
 //	Tiles
 	public static final SpriteSheet terrain 	= new SpriteSheet("/tiles/cave.png", 16, 16);
 	

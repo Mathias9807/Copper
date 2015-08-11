@@ -6,7 +6,7 @@ import copper.graphics.Screen;
 
 public class Menu {
 	
-	public static Menu current = new InterfaceMenu();
+	public static Menu current = new TitleMenu();
 	public boolean freezeWorld = false;
 	
 	public ArrayList<Component> components = new ArrayList<Component>();

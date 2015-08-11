@@ -2,9 +2,7 @@ package copper.gui;
 
 import com.sun.glass.events.KeyEvent;
 
-import javafx.scene.input.KeyCode;
 import copper.*;
-import copper.entities.*;
 import copper.graphics.*;
 import copper.levels.Level;
 

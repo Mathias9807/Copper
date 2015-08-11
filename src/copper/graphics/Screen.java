@@ -34,15 +34,15 @@ public class Screen {
 		xCam = 0;
 		yCam = 0;
 		cameraDrag = 8;
-		if (Level.tileMap.length << 4 < width) 		xCam -= width / 2 - (Level.tileMap.length << 4) / 2;
-		if (Level.tileMap[0].length << 4 < height) 	yCam -= height / 2 - (Level.tileMap[0].length << 4) / 2;
+		//if (Level.tileMap.length << 4 < width) 		xCam -= width / 2 - (Level.tileMap.length << 4) / 2;
+		//if (Level.tileMap[0].length << 4 < height) 	yCam -= height / 2 - (Level.tileMap[0].length << 4) / 2;
 		
-		if (focusedEntity == null){
+		/*if (focusedEntity == null){
 			for (int i = 0; i < entities.size(); i++) {
 				if (entities.get(i) instanceof Player) focusedEntity = entities.get(i);
 			}
 			if (focusedEntity == null) focusedEntity = entities.get((int) (Math.random() * entities.size()));
-		}
+		}*/
 	}
 
 	public void render() {

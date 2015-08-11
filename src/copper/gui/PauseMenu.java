@@ -4,7 +4,6 @@ import java.awt.event.KeyEvent;
 
 import copper.*;
 import copper.entities.Editor;
-import copper.graphics.*;
 
 
 public class PauseMenu extends Menu {
@@ -50,8 +49,7 @@ public class PauseMenu extends Menu {
 		
 		components.add(exit = new Button("Exit", Copper.WIDTH / 2, ++buttons * offs, 1, new Functional() {
 			public void call() {
-				Audio.hit.play();
-				Copper.engine.stop();
+				current = new TitleMenu();
 			}
 		}));
 	}

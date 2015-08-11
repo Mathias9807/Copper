@@ -63,7 +63,6 @@ public class Copper extends Canvas implements Runnable, ComponentListener {
 	public Copper() {
 		System.out.println("Setting up Engine components");
 		level = new Level();
-		level.loadLevel("/demo.txt");
 		
 		if (!FULLSCREEN) {
 			Dimension size = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
