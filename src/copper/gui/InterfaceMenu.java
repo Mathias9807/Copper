@@ -35,12 +35,12 @@ public class InterfaceMenu extends Menu {
 	}
 
 	public void render(Screen s) {
-		Sprite.healthBar.getSprite(0, 0).renderSprite(s, healthXOffs + Screen.getCamX(), healthYOffs + Screen.getCamY());
+		Sprite.healthBar.getSprite(0, 0).renderSprite(s.pixels, healthXOffs + Screen.getCamX(), healthYOffs + Screen.getCamY());
 		for (int i = 1; i <= 3; i++) 
-			Sprite.healthBar.getSprite(1, 0).renderSprite(s, 
+			Sprite.healthBar.getSprite(1, 0).renderSprite(s.pixels, 
 					healthXOffs + Screen.getCamX() + i * 8, healthYOffs + Screen.getCamY());
 		
-		Sprite.healthBar.getSprite(2, 0).renderSprite(s, 
+		Sprite.healthBar.getSprite(2, 0).renderSprite(s.pixels, 
 				healthXOffs + Screen.getCamX() + 4 * 8, healthYOffs + Screen.getCamY());
 		for (int x = healthXOffs + 1; x < (currentHealth / 
 				(double) Screen.getFocusedEntity().getMaxHealth()) * (healthXOffs + 16 + 3 * 8 - 1); x++) {
@@ -62,7 +62,7 @@ public class InterfaceMenu extends Menu {
 		Entity focused = Screen.getFocusedEntity();
 		for (int i = 0; i < focused.inventory.size(); i++) {
 			if (focused.inventory.get(i) != null) 
-				focused.inventory.get(i).sprite.renderSprite(s, 
+				focused.inventory.get(i).sprite.renderSprite(s.pixels, 
 						itemXPos + Screen.getCamX(), itemYPos + i * itemSpacing + Screen.getCamY());
 		}
 	}

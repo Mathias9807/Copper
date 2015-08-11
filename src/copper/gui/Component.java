@@ -1,7 +1,5 @@
 package copper.gui;
 
-import copper.graphics.*;
-
 
 /**
  * The Component class is the superclass of every item in a menu, e.g. buttons.  
@@ -28,6 +26,13 @@ public class Component {
 	public void setOrigin(int x, int y) {
 		xOrigin = x;
 		yOrigin = y;
+	}
+	
+	public boolean isInside(int x, int y) {
+		return x >= this.x 
+				&& x < this.x + width 
+				&& y >= this.y 
+				&& y < this.y + height;
 	}
 
 	public void setX(int x) { this.x = x; }

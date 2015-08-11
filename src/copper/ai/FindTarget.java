@@ -10,8 +10,6 @@ import copper.levels.Level;
 public class FindTarget extends Routine {
 	
 	public int run(Entity e) {
-		System.out.println(e.target);
-		
 		List<Entity> targets = new ArrayList<Entity>();
 		for (int i = 0; i < Level.entities.size(); i++) 
 			if (isValidTarget(e, Level.entities.get(i))) {

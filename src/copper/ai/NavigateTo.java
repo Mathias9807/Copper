@@ -82,7 +82,6 @@ public class NavigateTo extends Routine {
 				openList.sort(comparator);
 				cur = openList.get(0);
 				
-				System.out.println(cur.p);
 				for (int x = -1; x < 2; x++) 
 					tileLoop: 
 						for (int y = -1; y < 2; y++) {

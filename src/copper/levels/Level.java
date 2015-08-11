@@ -23,11 +23,12 @@ public class Level {
 	
 	public static final int    TILE_SIZE 	= 16;
 	
+	private boolean mapHasChanged = true;
+	
 	public void loadLevel(String path) {
 		System.out.println("Loading Level: " + path);
 		loadFromFile("/copper/levels" + path);
 		levelBuffer = new int[tileMap.length * TILE_SIZE][tileMap[0].length * TILE_SIZE];
-		renderBuffer();
 		
 		if (bgMusic != null) {
 			bgMusic.stop();
@@ -35,13 +36,23 @@ public class Level {
 		}
 	}
 	
-	private void renderBuffer(){
+	public void setTile(int tile, int x, int y) {
+		if (x < 0 || x >= tileMap.length) return;
+		if (y < 0 || y >= tileMap[0].length) return;
+		if (tile == tileMap[x][y]) return;
+		
+		tileMap[x][y] = tile;
+		mapHasChanged = true;
+	}
+	
+	public void renderBuffer(){
 		for (int x = 0; x < Level.tileMap.length; x++) {
 			for (int y = 0; y < Level.tileMap[0].length; y++) {
 				if (tileMap[x][y] == -1) continue;
 				Sprite.render(levelBuffer, tileMap[x][y], x * TILE_SIZE, y * TILE_SIZE);
 			}
 		}
+		mapHasChanged = false;
 	}
 	
 	private void loadFromFile(String path) {
@@ -94,6 +105,10 @@ public class Level {
 			new EarthWizard(x, y, z);
 			break;
 		}
+	}
+	
+	public boolean hasMapChanged() {
+		return mapHasChanged;
 	}
 	
 	/*

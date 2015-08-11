@@ -42,7 +42,7 @@ public class Sprite {
 
 	public static HashMap<Character, Integer> characters = createCharacterHashMap();
 
-	private static final int 	NON_OPAQUE_COLOR = 0xFF00FF;
+	public static final int 	NON_OPAQUE_COLOR = 0xFF00FF;
 	
 	protected int[][] buffer;
 	public int width, height;
@@ -86,32 +86,35 @@ public class Sprite {
 		}
 	}
 
-	public void renderSprite(Screen screen, int x, int y) {
-		int xPos = x - Screen.getCamX(), yPos = y - Screen.getCamY();
-		
+	public void render(int[][] pixels, int x, int y) {
 		for (int xx = 0; xx < width; xx++) {
-			if (xPos + xx < 0 || xPos + xx >= screen.pixels.length) continue;
+			if (x + xx < 0 || x + xx >= pixels.length) continue;
 			
 			for (int yy = 0; yy < height; yy++) {
-				if (yPos + yy < 0 || yPos + yy >= screen.pixels[0].length) continue;
+				if (y + yy < 0 || y + yy >= pixels[0].length) continue;
 				
 				int color = buffer[xx][yy];
 				if ((color & 0xFFFFFF) == NON_OPAQUE_COLOR) continue; // Alpha testing.
 				
-				screen.pixels[xPos + xx][yPos + yy] = color;
+				pixels[x + xx][y + yy] = color;
 			}
 		}
 	}
 
-	public void renderSprite(Screen screen, int x, int y, double angle) {
-//		int[][] temp = new int[(int) (width * 1.4)][(int) (height * 1.4)];
+	public void renderSprite(int[][] pixels, int x, int y) {
 		int xPos = x - Screen.getCamX(), yPos = y - Screen.getCamY();
+		
+		render(pixels, xPos, yPos);
+	}
+
+	public void render(int[][] pixels, int x, int y, double angle) {
+//		int[][] temp = new int[(int) (width * 1.4)][(int) (height * 1.4)];
 		angle = Math.toRadians(angle);
 		
 		for (int xx = -width / 2; xx < width / 2; xx++) {
 			double xCos = xx * Math.cos(angle);
 			double xSin = xx * Math.sin(angle);
-			if (xPos + xx < 0 || xPos + xx >= screen.pixels.length) continue;
+			if (x + xx < 0 || x + xx >= pixels.length) continue;
 			
 			for (int yy = -height / 2; yy < height / 2; yy++) {
 				int color = this.getBuffer()[xx + width / 2][yy + height / 2];
@@ -119,35 +122,45 @@ public class Sprite {
 				
 				double yCos = yy * Math.cos(angle);
 				double ySin = yy * Math.sin(angle);
-				int xRot = (int) Math.round(xPos + (xCos + ySin) + width / 2);
-				int yRot = (int) Math.round(yPos + (yCos - xSin) + height / 2);
+				int xRot = (int) Math.round(x + (xCos + ySin) + width / 2);
+				int yRot = (int) Math.round(y + (yCos - xSin) + height / 2);
 				
-				if (xRot < 0 || xRot >= screen.pixels.length) continue;
-				if (yRot < 0 || yRot >= screen.pixels[0].length) continue;
+				if (xRot < 0 || xRot >= pixels.length) continue;
+				if (yRot < 0 || yRot >= pixels[0].length) continue;
 				
-				screen.pixels[xRot][yRot] = color;
+				pixels[xRot][yRot] = color;
 			}
 		}
 	}
-	
-	public void renderSprite(Screen screen, int x, int y, int width, int height) {
+
+	public void renderSprite(int[][] pixels, int x, int y, double angle) {
 		int xPos = x - Screen.getCamX(), yPos = y - Screen.getCamY();
-		
+
+		render(pixels, xPos, yPos, angle);
+	}
+	
+	public void render(int[][] pixels, int x, int y, int width, int height) {
 		double xOff = width / (double) buffer.length;
 		double yOff = height / (double) buffer[0].length;
 		
 		for (int xx = 0; xx < width; xx++) {
-			if (xPos + xx < 0 || xPos + xx >= screen.pixels.length) continue;
+			if (x + xx < 0 || x + xx >= pixels.length) continue;
 			
 			for (int yy = 0; yy < height; yy++) {
-				if (yPos + yy < 0 || yPos + yy >= screen.pixels[0].length) continue;
+				if (y + yy < 0 || y + yy >= pixels[0].length) continue;
 				
 				int color = buffer[(int) (xx / xOff)][(int) (yy / yOff)];
 				if ((color & 0xFFFFFF) == NON_OPAQUE_COLOR) continue; // Alpha testing.
 				
-				screen.pixels[xPos + xx][yPos + yy] = buffer[(int) (xx / xOff)][(int) (yy / yOff)];
+				pixels[x + xx][y + yy] = buffer[(int) (xx / xOff)][(int) (yy / yOff)];
 			}
 		}
+	}
+	
+	public void renderSprite(int[][] pixels, int x, int y, int width, int height) {
+		int xPos = x - Screen.getCamX(), yPos = y - Screen.getCamY();
+		
+		render(pixels, xPos, yPos, width, height);
 	}
 	
 	public static void render(int[][] pixelBuffer, int tile, int x, int y){
@@ -161,7 +174,7 @@ public class Sprite {
 			Sprite ch = font.getSprite(c);
 			
 			for (int xx = 0; xx < ch.width; xx++) {
-				if (x + xx < 0 || x + xx + i * ch.width >= buffer.length) continue;
+				if ((int) x + xx + i * ch.width < 0 || (int) x + xx + i * ch.width >= buffer.length) continue;
 				
 				for (int yy = 0; yy < ch.height; yy++) {
 					if (y + yy < 0 || y + yy >= buffer[0].length) continue;
@@ -174,17 +187,27 @@ public class Sprite {
 		}
 	}
 	
-	public static void renderRect(int[][] buffer, int x, int y, int w, int h) {
-		for (int xx = 0; xx <= w; xx++) {
-			if (x + xx < 0 || x + xx >= buffer.length || y < 0 || y + h >= buffer[0].length) continue;
-			buffer[x + xx][y] = 0;
-			buffer[x + xx][y + h] = 0;
-		}
-		for (int yy = 0; yy < h; yy++) {
-			if (y + yy < 0 || y + yy >= buffer[0].length || x < 0 || x + w >= buffer.length) continue;
-			buffer[x][y + yy] = 0;
-			buffer[x + w][y + yy] = 0;
-		}
+	public static void renderRect(int[][] buffer, int c, int x, int y, int w, int h) {
+		if (y >= 0 && y < buffer[0].length) 
+			for (int xx = x < 0 ? 0 : x; xx < x + w; xx++) {
+				if (xx >= buffer.length) break;
+				buffer[xx][y] = c;
+			}
+		if (y + h >= 0 && y + h < buffer[0].length) 
+			for (int xx = x < 0 ? 0 : x; xx < x + w; xx++) {
+				if (xx >= buffer.length) break;
+				buffer[xx][y + h] = c;
+			}
+		if (x >= 0 && x < buffer.length) 
+			for (int yy = y < 0 ? 0 : y; yy < y + h; yy++) {
+				if (yy >= buffer[0].length) break;
+				buffer[x][yy] = c;
+			}
+		if (x + w >= 0 && x + w < buffer.length) 
+			for (int yy = y < 0 ? 0 : y; yy < y + h + 1; yy++) {
+				if (yy >= buffer[0].length) break;
+				buffer[x + w][yy] = c;
+			}
 	}
 	
 	public static void fillRect(int[][] buffer, int color, int x, int y, int w, int h) {

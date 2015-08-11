@@ -1,6 +1,6 @@
 package copper;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 import javax.sound.sampled.*;
@@ -85,7 +85,7 @@ public class Audio {
 			a.path = AUDIO_PATH + path;
 			
 			AudioInputStream stream = AudioSystem.getAudioInputStream(
-					Copper.class.getResourceAsStream(a.path));
+					new BufferedInputStream(Copper.class.getResourceAsStream(a.path)));
 			
 			a.clip.open(stream);
 			
@@ -132,7 +132,7 @@ public class Audio {
 		try {
 			clip = AudioSystem.getClip();
 			clip.open(AudioSystem.getAudioInputStream(
-					Copper.class.getResourceAsStream(a.path)));
+					new BufferedInputStream(Copper.class.getResourceAsStream(a.path))));
 			clip.loop(loop ? Clip.LOOP_CONTINUOUSLY : 0);
 		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
 			e.printStackTrace();

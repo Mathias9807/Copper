@@ -122,8 +122,8 @@ public class Particle extends Entity {
 	}
 
 	public void render(Screen screen) {
-		if (spriteRot != 0) sprite.renderSprite(screen, xAbsolute, yAbsolute, spriteRot);
-		else sprite.renderSprite(screen, xAbsolute, yAbsolute);
+		if (spriteRot != 0) sprite.renderSprite(screen.pixels, xAbsolute, yAbsolute, spriteRot);
+		else sprite.renderSprite(screen.pixels, xAbsolute, yAbsolute);
 	}
 
 	public boolean isPushable() {

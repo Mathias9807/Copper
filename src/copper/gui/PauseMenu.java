@@ -3,13 +3,16 @@ package copper.gui;
 import java.awt.event.KeyEvent;
 
 import copper.*;
-import copper.graphics.Sprite;
+import copper.entities.Editor;
+import copper.graphics.*;
 
 
 public class PauseMenu extends Menu {
 	
-	public Button b0;
-	public Button b1;
+	public Button continueButton;
+	public Button consoleButton;
+	public Button editorButton;
+	public Button exit;
 	public Window console;
 	
 	public PauseMenu() {
@@ -21,7 +24,15 @@ public class PauseMenu extends Menu {
 	public void initComponents() {
 		components.add(new Label(Copper.WIDTH / 2, 8, "Paused", true));
 		
-		components.add(b0 = new Button("Console", Copper.WIDTH / 2, 32, 0, new Functional() {
+		components.add(continueButton = new Button("Continue", Copper.WIDTH / 2, 32, 0, new Functional() {
+			public void call() {
+				current = new InterfaceMenu();
+				Audio.resumeAll();
+				Panel.pressedMButtons.clear();
+			}
+		}));
+		
+		components.add(consoleButton = new Button("Console", Copper.WIDTH / 2, 48, 0, new Functional() {
 			public void call() {
 				Audio.hit.play();
 				if (console == null) {
@@ -31,7 +42,14 @@ public class PauseMenu extends Menu {
 			}
 		}));
 		
-		components.add(b1 = new Button("Exit", Copper.WIDTH / 2, 64, 1, new Functional() {
+		components.add(editorButton = new Button("Editor", Copper.WIDTH / 2, 64, 1, new Functional() {
+			public void call() {
+				new Editor(0, 0, 1);
+				current = new EditorMenu();
+			}
+		}));
+		
+		components.add(exit = new Button("Exit", Copper.WIDTH / 2, 96, 1, new Functional() {
 			public void call() {
 				Audio.hit.play();
 				Copper.engine.stop();
@@ -40,8 +58,10 @@ public class PauseMenu extends Menu {
 	}
 	
 	protected void tickComponents() {
-		b0.checkClicks();
-		b1.checkClicks();
+		continueButton.checkClicks();
+		consoleButton.checkClicks();
+		exit.checkClicks();
+		editorButton.checkClicks();
 		if (console != null) console.tick();
 		
 		if (Panel.pressedKeys.contains(KeyEvent.VK_ESCAPE)) {

@@ -43,6 +43,7 @@ public class Copper extends Canvas implements Runnable, ComponentListener {
 	public static int 				HEIGHT			= FULLSCREEN ? DISPLAYMODE.getHeight() / SCALE : (int) (WIDTH * ASPECT_RATIO);
 	
 	public static final boolean 	DEBUG_MODE		= false;
+	public static boolean 			EDITOR_MODE		= false;
 	
 	public static JFrame 			window;
 	

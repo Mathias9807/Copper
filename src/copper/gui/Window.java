@@ -13,19 +13,27 @@ import copper.graphics.Sprite;
 
 public class Window extends Component {
 	
-	public static final int WINDOW_BAR_HEIGHT = 5;
-	public static final int WINDOW_BAR_COLOR = 0x8888AA;
+	public static final int 	WINDOW_BAR_HEIGHT = 7;
+	public static final int 	WINDOW_BAR_COLOR = 0x8888AA;
 	
-	public int[][] pixels;
+	public String 				name;
+	public int[][] 				pixels;
 	public ArrayList<Component> subComponents = new ArrayList<Component>();
+	
+	public Functional			function = () -> {};
 	
 	private int mouseStartX, mouseStartY, windowStartX, windowStartY;
 	private boolean mouseGrabbed;
 	
-	public Window(int x, int y, int w, int h) {
+	public Window(int x, int y, int w, int h, String name) {
 		setBounds(x, y, w, h);
 		mouseGrabbed = false;
 		pixels = new int[w][h - WINDOW_BAR_HEIGHT];
+		this.name = name;
+	}
+	
+	public Window(int x, int y, int w, int h) {
+		this(x, y, w, h, "");
 	}
 	
 	public void tick() {
@@ -34,23 +42,30 @@ public class Window extends Component {
 			mouseStartY = Panel.getMouseY();
 			windowStartX = x;
 			windowStartY = y;
-			if (Panel.getMouseX() / Copper.SCALE >= x && Panel.getMouseY() / Copper.SCALE >= y
-					&& Panel.getMouseX() / Copper.SCALE < x + width 
-					&& Panel.getMouseY() / Copper.SCALE < y + WINDOW_BAR_HEIGHT) 
+			if (Panel.getMouseX() >= x && Panel.getMouseY() >= y
+					&& Panel.getMouseX() < x + width 
+					&& Panel.getMouseY() < y + WINDOW_BAR_HEIGHT) 
 				mouseGrabbed = true;
 		}
 		if (Panel.mButtons[0] && mouseGrabbed) {
-			int deltaX = Panel.getMouseX() / Copper.SCALE - mouseStartX / Copper.SCALE;
-			int deltaY = Panel.getMouseY() / Copper.SCALE - mouseStartY / Copper.SCALE;
+			int deltaX = Panel.getMouseX() - mouseStartX;
+			int deltaY = Panel.getMouseY() - mouseStartY;
 			x = windowStartX + deltaX;
 			y = windowStartY + deltaY;
 		}else 
 			mouseGrabbed = false;
 		
-		for (int i = 0; i < subComponents.size(); i++) {
-			
+		if (Panel.pressedMButtons.contains(0) 
+				&& Panel.getMouseX() >= x 
+				&& Panel.getMouseX() < x + width 
+				&& Panel.getMouseY() >= y + WINDOW_BAR_HEIGHT - 1 
+				&& Panel.getMouseY() < y + height) 
+			function.call();
+		
+		y = y < 0 ? 0 : y;
+		
+		for (int i = 0; i < subComponents.size(); i++) 
 			subComponents.get(i).tick();
-		}
 	}
 	
 	public void render(int[][] pixels) {
@@ -59,6 +74,8 @@ public class Window extends Component {
 		}
 		
 		Sprite.fillRect(pixels, WINDOW_BAR_COLOR, x, y, width, WINDOW_BAR_HEIGHT);
+		Sprite.renderText(pixels, Sprite.fontSmall, name, 
+				0xEEEEEE, x, y + 1);
 		
 		for (int x = 0; x < width; x++) {
 			if (x + this.x < 0) continue;

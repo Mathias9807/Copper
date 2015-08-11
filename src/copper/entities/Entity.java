@@ -205,7 +205,7 @@ public class Entity {
 	public boolean isGhost()						{ return false; 						}
 	
 	public void render(Screen screen) {
-		sprite.renderSprite(screen, xAbsolute, yAbsolute);
+		sprite.renderSprite(screen.pixels, xAbsolute, yAbsolute);
 	}
 	
 //	Setters

@@ -49,6 +49,8 @@ public class Screen {
 		centerScreen();
 		clearScreen(Sprite.terrain.getSprite(1, 0));
 		
+		if (Copper.level.hasMapChanged()) Copper.level.renderBuffer();
+		
 		Collections.sort(entities, comparator);
 		
 		for (int x = xCam; x < width + xCam; x++) {
@@ -64,7 +66,7 @@ public class Screen {
 			Entity e = entities.get(i);
 			Sprite shadow = e.getShadow();
 			if (shadow == null) continue;
-			shadow.renderSprite(this, (int) e.x + e.width / 2 - shadow.width / 2, 
+			shadow.renderSprite(pixels, (int) e.x + e.width / 2 - shadow.width / 2, 
 					(int) e.y + e.height - shadow.height / 2);
 		}
 		
@@ -73,7 +75,7 @@ public class Screen {
 		
 		if (Copper.DEBUG_MODE) 
 			for (int i = 0; i < entities.size(); i++)
-				Sprite.renderRect(pixels, (int) entities.get(i).x - xCam, (int) entities.get(i).y - yCam, 
+				Sprite.renderRect(pixels, 0, (int) entities.get(i).x - xCam, (int) entities.get(i).y - yCam, 
 						(int) entities.get(i).width, (int) entities.get(i).height);
 		
 		Menu.current.render(this);
@@ -110,6 +112,11 @@ public class Screen {
 		
 		int xFocus = (int) (focusedEntity.x + focusedEntity.width / 2) - width / 2;
 		int yFocus = (int) (focusedEntity.y + focusedEntity.height / 2 - focusedEntity.z) - height / 2;
+		
+		if (Copper.EDITOR_MODE) {
+			xCam = xFocus;
+			yCam = yFocus;
+		}
 		
 		if (xCam < xFocus - cameraDrag) 		xCam = xFocus - cameraDrag;
 		else if (xCam > xFocus + cameraDrag) 	xCam = xFocus + cameraDrag;

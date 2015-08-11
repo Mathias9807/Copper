@@ -49,8 +49,8 @@ public class Player extends Entity {
 		if (keys[KeyEvent.VK_D]) dx += speed;
 		if (keys[KeyEvent.VK_SPACE]) dz += 0.05;
 		
-		int xx = Panel.getMouseX() / Copper.SCALE - (xAbsolute - Screen.getCamX()) - width / 2;
-		int yy = Panel.getMouseY() / Copper.SCALE - (yAbsolute - Screen.getCamY()) - height / 2;
+		int xx = Panel.getMouseX() - (xAbsolute - Screen.getCamX()) - width / 2;
+		int yy = Panel.getMouseY() - (yAbsolute - Screen.getCamY()) - height / 2;
 		
 		direction = (int) (Math.atan2(yy, xx) / Math.PI * 180);
 		

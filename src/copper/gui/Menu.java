@@ -1,8 +1,5 @@
 package copper.gui;
 
-import static copper.Panel.pressedKeys;
-
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import copper.graphics.Screen;
