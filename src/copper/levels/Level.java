@@ -43,6 +43,21 @@ public class Level {
 		}
 	}
 	
+	public void unloadLevel() {
+		currentLevelPath = "";
+		levelBuffer = new int[0][0];
+		solid = new boolean[0];
+		tileMap = new int[0][0];
+		
+		spawners.clear();
+		players.clear();
+		entities.clear();
+		
+		if (bgMusic != null) {
+			bgMusic.stop();
+		}
+	}
+	
 	public void writeLevel() {
 		StringBuilder s = new StringBuilder();
 		

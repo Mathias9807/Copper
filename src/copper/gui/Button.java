@@ -8,7 +8,6 @@ public class Button extends Component {
 	private String 		text;
 	private Functional 	action;
 	private int 		xCenter, yCenter;
-	private boolean 	selected;
 	
 	public Button(String text, double x, double y, int id, Functional action) {
 		width 			= Sprite.font.width * text.length() + 2;
@@ -22,9 +21,7 @@ public class Button extends Component {
 		selected		= false;
 	}
 	
-	public void checkClicks() {
-		selected = isInside(Panel.getMouseX(), Panel.getMouseY());
-		
+	public void tick() {
 		if (selected && Panel.pressedMButtons.contains(0)) action.call();
 	}
 	

@@ -9,6 +9,7 @@ package copper.gui;
 public class Component {
 	
 	protected int x, y, width, height, xOrigin, yOrigin;
+	protected boolean selected = false;
 	
 	public void tick() {
 	}

@@ -18,6 +18,7 @@ public class Window extends Component {
 	
 	public String 				name;
 	public int[][] 				pixels;
+	public int					bgColor;
 	public ArrayList<Component> subComponents = new ArrayList<Component>();
 	
 	public Functional			function = () -> {};
@@ -42,9 +43,9 @@ public class Window extends Component {
 			mouseStartY = Panel.getMouseY();
 			windowStartX = x;
 			windowStartY = y;
-			if (Panel.getMouseX() >= x && Panel.getMouseY() >= y
-					&& Panel.getMouseX() < x + width 
-					&& Panel.getMouseY() < y + WINDOW_BAR_HEIGHT) 
+			if (selected 
+					&& mouseStartX >= x && mouseStartX < width + x
+					&& mouseStartY >= y && mouseStartY < y + WINDOW_BAR_HEIGHT) 
 				mouseGrabbed = true;
 		}
 		if (Panel.mButtons[0] && mouseGrabbed) {
@@ -55,20 +56,30 @@ public class Window extends Component {
 		}else 
 			mouseGrabbed = false;
 		
-		if (Panel.pressedMButtons.contains(0) 
-				&& Panel.getMouseX() >= x 
-				&& Panel.getMouseX() < x + width 
-				&& Panel.getMouseY() >= y + WINDOW_BAR_HEIGHT - 1 
-				&& Panel.getMouseY() < y + height) 
+		if (Panel.pressedMButtons.contains(0) && selected) 
 			function.call();
 		
 		y = y < 0 ? 0 : y;
+		y = y >= Copper.HEIGHT - WINDOW_BAR_HEIGHT ? Copper.HEIGHT - WINDOW_BAR_HEIGHT : y;
+		
+		for (int i = 0; i < subComponents.size(); i++) 
+			subComponents.get(i).selected = false;
+		
+		for (int i = subComponents.size() - 1; i >= 0; i--) {
+			Component c = subComponents.get(i);
+			
+			if (c.isInside(Panel.getMouseX() - x, Panel.getMouseY() - (y + WINDOW_BAR_HEIGHT))) {
+				c.selected = true;
+				break;
+			}
+		}
 		
 		for (int i = 0; i < subComponents.size(); i++) 
 			subComponents.get(i).tick();
 	}
 	
 	public void render(int[][] pixels) {
+		Sprite.fillRect(this.pixels, bgColor, 0, 0, width, height - WINDOW_BAR_HEIGHT);
 		for (int i = 0; i < subComponents.size(); i++) {
 			subComponents.get(i).render(this.pixels);
 		}
