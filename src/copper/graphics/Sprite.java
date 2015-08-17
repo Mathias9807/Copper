@@ -213,6 +213,8 @@ public class Sprite {
 	}
 	
 	public static void fillRect(int[][] buffer, int color, int x, int y, int w, int h) {
+		if ((color & 0xFFFFFF) == NON_OPAQUE_COLOR) return;
+		
 		for (int xx = 0; xx < w; xx++) {
 			if (x + xx < 0 || x + xx >= buffer.length) continue;
 			

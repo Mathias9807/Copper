@@ -51,14 +51,11 @@ public class TitleMenu extends Menu {
 		}));
 	}
 	
-	protected void tickComponents() {
-		newButton.checkClicks();
-		loadButton.checkClicks();
-		quitButton.checkClicks();
+	public void tick() {
+		super.tick();
 		
 		if (Panel.pressedKeys.contains(KeyEvent.VK_ESCAPE)) {
-			current = new InterfaceMenu();
-			Audio.resumeAll();
+			System.out.println("TODO: Add exit in TitleMenu.java");
 		}
 	}
 

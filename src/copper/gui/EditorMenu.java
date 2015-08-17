@@ -21,22 +21,23 @@ public class EditorMenu extends Menu {
 				SPRITE_SIZE * Sprite.terrain.getSpriteSheet().length, 
 				SPRITE_SIZE * Sprite.terrain.getSpriteSheet()[0].length, 
 				"Terrain");
+		terrain.bgColor = 0xFF00FF;
 		
 		terrain.function = () -> {
+			System.out.println("Click");
 			selectedTile = (Panel.getMouseX() - terrain.x) / SPRITE_SIZE;
 			selectedTile += (Panel.getMouseY() - terrain.y 
 					- Window.WINDOW_BAR_HEIGHT + 1) / SPRITE_SIZE 
 					* Sprite.terrain.getSpriteSheet().length;
 		};
+		components.add(terrain);
 	}
 	
 	public void tick() {
 		super.tick();
 
-		terrain.tick();
-		
 		if ((Panel.mButtons[0] || Panel.pressedMButtons.contains(0)) 
-				&& !terrain.isInside(Panel.getMouseX(), Panel.getMouseY())) 
+				&& !terrain.selected) 
 			Copper.level.setTile(selectedTile, 
 					(Panel.getMouseX() + Screen.getCamX()) / Level.TILE_SIZE, 
 					(Panel.getMouseY() + Screen.getCamY()) / Level.TILE_SIZE);
